@@ -1,0 +1,223 @@
+<?php
+/*=========================================================================
+ MIDAS Server
+ Copyright (c) Kitware SAS. 26 rue Louis Guérin. 69100 Villeurbanne, FRANCE
+ All rights reserved.
+ More information http://www.kitware.com
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0.txt
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+=========================================================================*/
+echo $this->doctype()
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Datasets</title>
+  <meta name="robots" content="index, follow, all" />
+  <!-- Import CSS -->
+  <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/common/common.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/view/view.index.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/lightbox/jquery.lightbox-0.5.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/imgliquid/imgLiquid.js.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery.qtip.min.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery-ui.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/jquery/jquery.jqplot.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery.qtip.min.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot?>/modules/ratings/public/css/star_rating/jquery.ui.stars.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot?>/modules/comments/public/css/item/item.comments.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot?>/modules/ratings/public/css/item/item.ratings.css" />
+
+  <?php echo $this->headLink();  // import the css ?>
+  <?php echo $this->headStyle(); // import the css ?>
+
+</head>
+<body>
+  <div class="category">
+  <span id="categoryBreadcrumb">
+    <a id="rootBreadcrumb" class="breadcrumbLink" href="">Datasets</a>
+  </span>
+</div>
+
+<div id="container_main">
+  <div id="extension_banner">
+    <div class="title">
+      <div class="extension_title"><?php echo $this->item->getName()?></div>
+      <div class="group_title">
+        <?php if($this->contributor) echo $this->contributor ?>
+      </div>
+    </div>
+    <div class="button_bar">
+      <?php if($this->logged) { ?>
+        <div class="logoutDiv"><a href="javascript:;" id="logoutLink">Logout</a></div>
+      <?php } ?>
+    </div>
+  </div>
+  <div class="left_column">
+    <div class="icon_art">
+      <img src="<?php echo $this->webroot ?>/item/thumbnail?itemId=<?php echo $this->item->getKey()?>" width="128" height="128" />
+    </div>
+    <div class="extensionActionButtonWrapper">
+      <input type="button" class="extensionActionButton" value=""/>
+    </div>
+    <div class="info_list">
+      <div class="info_item">
+        Created <?php echo date('F j, Y', strtotime($this->item->getDateCreation())); ?>
+      </div>
+      <div class="info_item">
+        <?php echo UtilityComponent::formatSize($this->item->getSizebytes()); ?>
+      </div>
+      <div class="info_item">
+        <?php echo $this->item->getDownload() ?> downloads
+      </div>
+    </div>
+    <div class="rating_area">
+      <?php echo $this->element('rating', 'ratings'); ?>
+    </div>
+    <div class="rating_scale">
+    </div>
+  </div>
+  <div class="right_content">
+    <?php
+    if($this->homepage)
+      { ?>
+      <div class="content_header">
+        Links
+      </div>
+      <div class="links">
+        <?php
+        echo '<div class="homepageContainer"><a target="_blank" href="'.$this->homepage.'">';
+        echo '<img alt="" src="'.$this->webroot."/".$this->moduleParent.'/slicerdatastore/public/images/house_link.png" /> ';
+        echo 'View home page</a></div>';
+        ?>
+      </div>
+    <?php 
+      } ?>
+    <div class="content_header">
+      Scenes (<?php echo count($this->metadata)?>):
+    </div>
+    <div class="screenshots" style="width:100%;">
+      <ul>
+      
+      <?php
+      foreach($this->metadata as $metadata)
+        {
+        echo "<li style='list-style: none;'>";
+        echo "<div style='float:left; width:400px;margin:5px;'>";
+        $url = $this->webroot."/download/?bitstream=".array_search($metadata['id'], $this->screenshots);
+        echo '<div style="display:none;" class="screenshotContainer">
+                <a class="screenshotPreview" href="'.$url.'">
+                  <img class="screenshotPreview"  src="'.$url.'">
+                </a>
+              </div>';
+        echo "</td>";
+        echo "<td>";
+        echo "<b>".$metadata['name']."</b><br/>";
+        echo $metadata['description'];
+        echo "</div>";
+        echo "</li>";
+        }
+      ?>
+      </table>
+    </div>
+    
+    
+    <div class="content_header">
+      User Comments
+    </div>
+    <div class="reviews">
+      <?php echo $this->element('comment', 'comments'); ?>
+    </div>
+  </div>
+</div>
+
+
+<!-- TEMPLATE: login form -->
+<div id="loginFormTemplate" style="display:none;">
+  <div class="loginError">
+  </div>
+  <form class="loginForm dialogForm" method="POST" action="<?php echo $this->webroot?>/user/ajaxlogin">
+    <table>
+      <tr><td>E-mail</td><td><input name="email" type="text" /></td></tr>
+      <tr><td>Password</td><td><input name="password" type="password" /></td></tr>
+      <tr><td></td><td><input type="submit" value="Login" /></td></tr>
+    </table>
+  </form>
+  <div>
+  Not registered? <a class="registerLink" href="javascript:;">Register</a>
+  </div>
+</div>
+
+<!-- TEMPLATE: register form -->
+<div id="registerFormTemplate" style="display:none;">
+  <div class="registerError">
+  </div>
+  <form class="registerForm dialogForm" method="POST" action="<?php echo $this->webroot?>/user/ajaxregister">
+    <table>
+      <tr><td>E-mail</td><td><input name="email" type="text" /></td></tr>
+      <tr><td>First Name</td><td><input name="firstname" type="text" /></td></tr>
+      <tr><td>Last Name</td><td><input name="lastname" type="text" /></td></tr>
+      <tr><td>Password</td><td><input name="password1" type="password" /></td></tr>
+      <tr><td>Confirm Password</td><td><input name="password2" type="password" /></td></tr>
+      <tr><td></td><td><input type="submit" value="Register" /></td></tr>
+    </table>
+  </form>
+  <div>
+  Already registered? <a class="loginLink" href="javascript:;">Login</a>
+  </div>
+</div>      
+
+
+  <?php
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery-ui.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.empty.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.callback.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.notice.js');  
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jquery.jqplot.min.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jqplot/jqplot.barRenderer.min.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jqplot/jqplot.categoryAxisRenderer.min.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jqplot/jqplot.pointLabels.min.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jquery.autogrow-textarea.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jquery.form.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery.qtip.min.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/view/view.index.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/lightbox/jquery.lightbox-0.5.pack.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/imgliquid/imgLiquid-min.js');
+  $this->headScript()->appendFile($this->webroot.'/modules/ratings/public/js/star_rating/jquery.ui.stars.min.js');
+  $this->headScript()->appendFile($this->webroot.'/modules/ratings/public/js/common/common.ratings.js');
+  $this->headScript()->appendFile($this->webroot.'/modules/comments/public/js/item/item.comments.js');
+
+    
+  ?>
+  <?php echo $this->headScript() ?>
+  <input type="hidden" class="webroot" value="<?php echo $this->webroot ?>" />
+  <div style="display: none;" class="jsonContent">
+    <?php echo $this->json ?>
+  </div>
+</body>
+
+<?php
+$footers = Zend_Registry::get('notifier')->callback('CALLBACK_CORE_GET_FOOTER_LAYOUT', array());
+if(!empty($footers))
+  {
+  foreach($footers as $footer)
+    {
+    echo $footer;
+    }
+  }
+?>
+</html>
+
+

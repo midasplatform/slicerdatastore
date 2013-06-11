@@ -1,0 +1,180 @@
+
+div.viewWrapper {
+  padding-right: 10px !important;
+}
+
+div.viewWrapperSlicer,div.viewWrapperBrowser {
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', helvetica, arial, Verdana, sans-serif;
+  font-size: 13px;
+  margin-left: 8px;
+  color: #777777;
+  width: 100%;
+}
+
+div.viewWrapperSlicer {
+}
+
+div.viewWrapperBrowser {
+}
+
+div.extensionsHeader,div.extensionsBody {
+  margin-right: 10px;
+}
+
+div.extensionsHeader {
+  height: 45px;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+div.extensionsTitle {
+  float: left;
+  font-size: 24px;
+  font-weight: bolder;
+  margin-top: 10px;
+}
+
+div.extensionFilterArea {
+  float: right;
+  margin-top: 10px;
+}
+
+div.kwLogoContainer {
+  float: right;
+  padding-top: 7px;
+}
+
+img.kwLogo:hover{
+  cursor: pointer;
+}
+
+div.extensionsBodyLeftColumn {
+  float: left;
+  width: 230px;
+  border-right: 1px solid #d0d0d0;
+  min-height: 450px;
+}
+
+div.extensionsBodyRightColumn {
+  margin-left: 230px;
+}
+
+div.extensionWrapper {
+  border: 1px solid white; /* Needed to preserve flow layout on hover */
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 5px;
+  width: 140px;
+  float: left;
+}
+
+div.extensionWrapper:hover {
+  border: 1px solid #d7d7d7;
+  background-color: #f5f5f5;
+}
+
+div.extensionNameWrapper,div.subtitleWrapper {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loadingExtensions {
+  padding-top: 8px;
+}
+
+.loadingExtensions img {
+  margin-left: 10px;
+}
+
+div.extensionRatings form {
+  display: inline;
+}
+
+div.categoryList {
+  padding-left: 5px;
+}
+
+img.extensionIcon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+a.extensionName,a.extensionName:visited,a.extensionName:active {
+  color: #242424 !important;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+a.extensionName:hover {
+  text-decoration: underline;
+  color: black !important;
+}
+
+span.subtitle {
+  font-size: 12px;
+}
+
+input.extensionActionButton {
+  width: 130px;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  }
+
+.extensionRatings {
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+span.totalVotes {
+  margin-left: 5px;
+}
+
+.categoriesHeader {
+  font-size: 17px;
+  margin-top: 8px;
+}
+
+ul.categoriesList,ul.categoriesSubList {
+  margin-left: 0px;
+  list-style-type: square;
+  font-size: 15px;
+  padding-left: 18px;
+}
+
+ul.categoriesList li,ul.categoriesSubList li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+ul.categoriesList li:hover,ul.categoriesSubList li:hover {
+  color: #222222;
+}
+
+.selectedCategory {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+div.paginationMessage {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d7d7d7;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+#prevPageExtensions {
+  margin-left: 20px;
+}
+
+#nextPageExtensions {
+  margin-left: 15px;
+}

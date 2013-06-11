@@ -1,0 +1,137 @@
+<?php
+/*=========================================================================
+ MIDAS Server
+ Copyright (c) Kitware SAS. 26 rue Louis Guérin. 69100 Villeurbanne, FRANCE
+ All rights reserved.
+ More information http://www.kitware.com
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0.txt
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+=========================================================================*/
+echo $this->doctype()
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Datasets</title>
+  <meta name="robots" content="index, follow, all" />
+  <!-- Import CSS -->
+  <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/common/common.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/index/index.index.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot?>/modules/ratings/public/css/star_rating/jquery.ui.stars.css" />
+  <?php
+    echo '<link type="text/css" rel="stylesheet" href="'.$this->coreWebroot.'/public/css/layout/jquery-ui.css" />';
+  ?>
+
+  <?php echo $this->headLink();  // import the css ?>
+  <?php echo $this->headStyle(); // import the css ?>
+
+</head>
+<body>
+  <div class="viewWrapperSlicer">
+      <div class="extensionsHeader">
+        <div class="extensionsTitle">Datasets</div>
+          <div class="kwLogoContainer">
+            <img alt="" class="kwLogo" src="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/images/kwlogo_100.png" />
+          </div>
+      </div>
+      <div class="extensionsBody">
+        <div class="extensionsBodyLeftColumn">
+          <div class="categoryList">
+            <div class="categoriesHeader">Categories</div>
+            <ul id="categoriesList" class="categoriesList">
+              <li id="categoryAll">All</li>
+            </ul>
+          </div>
+        </div>
+        <div class="extensionsBodyRightColumn">
+          <div class="extensionList">
+            <div class="paginationMessage"></div>
+            <div class="loadingExtensions">
+              <img alt="" src="<?php echo $this->coreWebroot?>/public/images/icons/loading.gif" /> Loading extensions
+            </div>
+            <div id="extensionsContainer">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPLATE: extension -->
+    <div class="extensionWrapper" style="display: none;" id="extensionTemplate">
+      <div class="extensionIconWrapper">
+        <img width="128px" height="128px" alt="" src="" class="extensionIcon" />
+      </div>
+      <div class="extensionNameWrapper">
+        <a href="javascript:;" class="extensionName"></a>
+      </div>
+      <div class="subtitleWrapper">
+        <span class="subtitle"></span>
+      </div>
+      <div class="extensionRatings">
+        <form>
+          <input type="radio" name="avgrate" value="1"/>
+          <input type="radio" name="avgrate" value="2"/>
+          <input type="radio" name="avgrate" value="3"/>
+          <input type="radio" name="avgrate" value="4"/>
+          <input type="radio" name="avgrate" value="5"/>
+          <input type="radio" name="avgrate" value="6"/>
+          <input type="radio" name="avgrate" value="7"/>
+          <input type="radio" name="avgrate" value="8"/>
+          <input type="radio" name="avgrate" value="9"/>
+          <input type="radio" name="avgrate" value="10"/>
+        </form>
+        <span class="totalVotes"></span>
+      </div>
+      <div class="extensionActionButtonWrapper">
+        <input type="button" class="extensionActionButton" />
+      </div>
+    </div>            
+
+
+  <?php
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery-ui.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.empty.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.callback.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.notice.js');
+  $this->headScript()->appendFile($this->webroot.'/modules/api/public/js/common/common.ajaxapi.js');
+  $this->headScript()->appendFile($this->webroot.'/modules/ratings/public/js/star_rating/jquery.ui.stars.min.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/index/index.index.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/scrollpagination/jquery.scrollpagination.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/visibility/jquery-visibility.js');
+
+    
+  ?>
+  <?php echo $this->headScript() ?>
+  <input type="hidden" class="webroot" value="<?php echo $this->webroot ?>" />
+  <div style="display: none;" class="jsonContent">
+    <?php echo $this->json ?>
+  </div>
+</body>
+
+<?php
+$footers = Zend_Registry::get('notifier')->callback('CALLBACK_CORE_GET_FOOTER_LAYOUT', array());
+if(!empty($footers))
+  {
+  foreach($footers as $footer)
+    {
+    echo $footer;
+    }
+  }
+?>
+</html>
+
+
