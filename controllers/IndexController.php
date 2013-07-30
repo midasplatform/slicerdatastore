@@ -18,11 +18,11 @@
  limitations under the License.
 =========================================================================*/
 
-/** Controller for the list of all extensions */
+/** Controller for the list of all datasets */
 class Slicerdatastore_IndexController extends Slicerdatastore_AppController
 {
   /**
-   * Action for rendering the page that lists extensions
+   * Action for rendering the page that lists datasets
    * @param os (Optional) The default operating system to filter by
    * @param arch (Optional) The default architecture to filter by
    * @param release (Optional) The default release to filter by
@@ -33,11 +33,4 @@ class Slicerdatastore_IndexController extends Slicerdatastore_AppController
     $this->view->json['category'] = $this->_getParam("category");
     }
     
-  /**
-   * Call this to render the kitware info dialog
-   */
-  public function kwinfoAction()
-    {
-    $this->disableLayout();
-    }
 } // end class

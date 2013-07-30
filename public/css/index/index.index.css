@@ -11,6 +11,19 @@ div.viewWrapperSlicer,div.viewWrapperBrowser {
   width: 100%;
 }
 
+input#searchInput {
+background: white url(../../images/search.png) no-repeat scroll 4px 4px;
+font-size: 12px;
+opacity: 0.9;
+padding: 0px 10px 3px 24px;
+width: 250px;
+border: 1px solid #cccccc;
+position: relative;
+top: -10px;
+height: 20px;
+padding-top: 2px;
+}
+
 div.viewWrapperSlicer {
 }
 

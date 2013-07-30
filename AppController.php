@@ -26,9 +26,7 @@ class Slicerdatastore_AppController extends MIDAS_GlobalModule
      parent::preDispatch();
      $this->view->moduleParent = (strpos(__FILE__, "privateModules") === false) ? "modules":"privateModules";
      $this->view->json['global']['moduleParent'] = $this->view->moduleParent;
-
-     // Select the module's layout
-     $this->_helper->layout->setLayoutPath(dirname(__FILE__)."/layouts");
-     $this->_helper->layout->setLayout('portal');
+     $this->view->json['global']['httpUrl'] = UtilityComponent::getServerURL();
+     
      }
   } //end class

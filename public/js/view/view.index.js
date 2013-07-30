@@ -114,12 +114,10 @@ $(document).ready(function() {
         .attr('extensionname', json.item.name);
     midas.slicerdatastore.updateExtensionButtonState(json.item.name);
 
-    if(json.layout == 'empty') {
-        midas.registerCallback('CALLBACK_RATINGS_AFTER_LOAD', 'ratings', function() {
-            $('#loginToComment,#loginToRate').unbind('click').click(midas.slicerdatastore.doLogin);
-            $('#registerToComment,#registerToRate').unbind('click').click(midas.slicerdatastore.doRegister);
-        });
-    }
+    midas.registerCallback('CALLBACK_RATINGS_AFTER_LOAD', 'ratings', function() {
+        $('#loginToComment,#loginToRate').unbind('click').click(midas.slicerdatastore.doLogin);
+        $('#registerToComment,#registerToRate').unbind('click').click(midas.slicerdatastore.doRegister);
+    });
 
     $('#commentsDiv h4').remove();
     $('#ratingsDiv h4').remove();

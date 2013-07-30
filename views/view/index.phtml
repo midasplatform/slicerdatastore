@@ -43,6 +43,16 @@ echo $this->doctype()
 
 </head>
 <body>
+  <div id="modalDialog" style="display:none;"></div>
+  <div class="MainDialog" style="display:none;">
+    <div class="MainDialogContent">
+    </div>
+    <div class="MainDialogLoading">
+      <img alt="" src="/Midas/Midas3/core/public/images/icons/loading.gif" />
+    </div>
+    <input type="hidden" class="DialogContentPage"/>
+  </div>
+
   <div class="category">
   <span id="categoryBreadcrumb">
     <a id="rootBreadcrumb" class="breadcrumbLink" href="">Datasets</a>
@@ -113,8 +123,8 @@ echo $this->doctype()
       foreach($this->metadata as $metadata)
         {
         echo "<li style='list-style: none;'>";
-        echo "<div style='float:left; width:400px;margin:5px;'>";
-        $url = $this->webroot."/download/?bitstream=".array_search($metadata['id'], $this->screenshots);
+        echo "<div style='float:left; width:700px;margin:5px;'>";
+        $url = $this->webroot."/slicerdatastore/view/download?bitstream=".array_search($metadata['id'], $this->screenshots);
         echo '<div style="display:none;" class="screenshotContainer">
                 <a class="screenshotPreview" href="'.$url.'">
                   <img class="screenshotPreview"  src="'.$url.'">
@@ -183,6 +193,7 @@ echo $this->doctype()
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery-ui.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.empty.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.callback.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.dialog.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.notice.js');  
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jquery.jqplot.min.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jqplot/jqplot.barRenderer.min.js');

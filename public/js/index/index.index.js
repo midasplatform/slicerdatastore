@@ -25,7 +25,6 @@ midas.slicerdatastore.renderExtension = function(extension, index) {
       .attr('qtip', extension.title)
       .attr('element', extension.id)
       .click(midas.slicerdatastore.extensionClick);
-    extDiv.find('span.subtitle').html(extension.description);
     extDiv.find('img.extensionIcon').attr('src', json.global.webroot+'/item/thumbnail?itemId='+extension.id)
       .attr('element', extension.id)
       .attr('extensionname', extension.title)
@@ -115,6 +114,7 @@ return {
       category: midas.slicerdatastore.category,
       os: midas.slicerdatastore.os,
       arch: midas.slicerdatastore.arch,
+      query: $('#searchInput').val(),
       //release: midas.slicerdatastore.release,
       revision: midas.slicerdatastore.revision,
       limit: currentPageLimit,
@@ -132,7 +132,10 @@ return {
   'heightOffset': 20,
   'dataType':'json',
   'onSuccess': function(obj, retVal){
-   
+      if(retVal.data.offset == 0)
+        {
+        midas.slicerdatastore.resetFilter();
+        }
       midas.slicerdatastore.totalResults = retVal.data.total;
       $.each(retVal.data.items, function(index, extension) {
           midas.slicerdatastore.renderExtension(extension, index);
@@ -266,6 +269,7 @@ midas.slicerdatastore.categoriesLoaded = function () {
         midas.slicerdatastore.selectedCategory.removeClass('selectedCategory');
         midas.slicerdatastore.selectedCategory = $(this);
         $(this).addClass('selectedCategory');
+        $('#searchInput').val('');
         midas.slicerdatastore.applyFilter(true);
     });
 
@@ -300,6 +304,7 @@ midas.slicerdatastore.fetchCategories = function () {
     
 };
 
+var currentSearch = "";
 $(document).ready(function() {
     midas.slicerdatastore.category = json.category;
 
@@ -320,10 +325,15 @@ $(document).ready(function() {
       // If visibility API is not supported, fetch all extensions
       midas.slicerdatastore.applyFilter();
     }
-
-    $('img.kwLogo').click(function () {
-        var dlgWidth = Math.min($(window).width() * 0.9, 600);
-        midas.loadDialog('KWInfo', '/slicerdatastore/index/kwinfo');
-        midas.showDialog('Slicer Extensions Catalog', false, {width: dlgWidth})
+    
+    $('#searchInput').unbind('keyup').keyup(function(){
+      if(currentSearch != $(this).val())
+        {
+        console.log('tt');
+        midas.slicerdatastore.pageOffset = 0;
+        midas.slicerdatastore.applyFilter(true);
+        }
+      currentSearch = $(this).val();
     });
+
 });

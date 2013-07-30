@@ -23,7 +23,7 @@ class Slicerdatastore_ViewController extends Slicerdatastore_AppController
 {
   /**
    * Action for rendering the dataset page
-   * @param extensionId The extension id to view
+   * @param itemId The dataset id to view
    */
   function indexAction()
     {
@@ -95,5 +95,36 @@ class Slicerdatastore_ViewController extends Slicerdatastore_AppController
                                   'user' => $this->userSession->Dao);
 
     $this->view->layout = $this->view->json['layout'];
+    }
+    
+  /**
+   * Download a bitstream (mainly used for thumbnails)
+   */
+  function downloadAction()
+    {
+    $this->disableLayout();
+    $bitsreamid = $this->_getParam("bitstream");
+    $componentLoader = new MIDAS_ComponentLoader();
+    $modelLoader = new MIDAS_ModelLoader();
+    if(isset($bitsreamid) && is_numeric($bitsreamid))
+      {
+      $bitstream = $modelLoader->loadModel("Bitstream")->load($bitsreamid);
+      if(!$bitstream)
+        {
+        throw new Zend_Exception('Invalid bitstream id', 404);
+        }
+      $revision = $bitstream->getItemrevision();
+      $item = $revision->getItem();
+      if($item == false || !$modelLoader->loadModel("Item")->policyCheck($item, $this->userSession->Dao))
+        {
+        throw new Zend_Exception('Permission denied');
+        }
+      $componentLoader->loadComponent("DownloadBitstream")->download($bitstream, 0, false);
+      return;
+      }
+    else
+      {
+      throw new Zend_Exception("No parameters, expecting  bitstream.");
+      }
     }
 } // end class

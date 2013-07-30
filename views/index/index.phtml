@@ -38,10 +38,13 @@ echo $this->doctype()
 
 </head>
 <body>
+  <div id="modalDialog" style="display:none;"></div>
   <div class="viewWrapperSlicer">
       <div class="extensionsHeader">
         <div class="extensionsTitle">Datasets</div>
           <div class="kwLogoContainer">
+           
+            <input id="searchInput" placeholder="Search..."/>
             <img alt="" class="kwLogo" src="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/images/kwlogo_100.png" />
           </div>
       </div>

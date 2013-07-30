@@ -76,8 +76,12 @@ class Slicerdatastore_ApiComponent extends AppComponent
     else $limit = 0;
     if(isset($args['category']) && !empty($args['category'])) $query = "text-mrbextrator.slicerdatastore:true AND text-mrbextrator.category:".strtolower($args['category']);
     else $query = "text-mrbextrator.slicerdatastore:true";
-
-
+    
+    if(isset($args['query']) && !empty($args['query']))
+      {
+      $query .= ' AND (name: '.$args['query'].
+                 ' OR description: '.$args['query'].')';
+      }
     $itemIds = array();
     $componentLoader = new MIDAS_ComponentLoader();
     $solrComponent = $componentLoader->loadComponent('Solr', 'solr');
@@ -124,7 +128,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
         }
       }
 
-    return array('total' => $totalResults , 'items'=>$items);
+    return array('offset' => $offset, 'total' => $totalResults , 'items'=>$items);
     }
 
 } // end class

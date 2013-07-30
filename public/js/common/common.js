@@ -4,18 +4,64 @@ midas.slicerdatastore = midas.slicerdatastore || {};
 /**
  * Called when a user clicks the extension button (download, install or uninstall)
  */
+var timer = false;
+function callbackTimer()
+  {
+  var stats = window.DataStoreGUI.getStreamStat();
+  if(stats == "-1")
+    {
+    $( "#modalDialog" ).dialog( "close" );
+    if(timer != false) clearTimeout(timer);
+    }
+  else
+    {
+    var statsArray = stats.split(';;');
+    if(statsArray.length == 2)
+      {
+      $('#progressDownload').html(statsArray[1]);
+      $('#progressBar').attr('value', parseInt(statsArray[0]));
+      }
+
+    timer = setTimeout("callbackTimer()",500);
+    }
+  }
 midas.slicerdatastore.extensionButtonClick = function() {
     var extensionId = $(this).attr('element');
-    if(!window.extensions_manager_model || $(this).hasClass('extensionDownloadButton')) {
-        var url = json.global.webroot+'/download?items='+extensionId;
+    var extensionName = $(this).attr('extensionname');
+    var url = json.global.httpUrl+json.global.webroot+'/download?items='+extensionId+'&name='+extensionId+"_"+extensionName;
+    var urlThumbnail = json.global.httpUrl+json.global.webroot+'/item/thumbnail?itemId='+extensionId;
+    if(!window.DataStoreGUI) {        
         window.location.assign(url);
-    } else if($(this).hasClass('extensionInstallButton')) {
-        window.extensions_manager_model.downloadAndInstallExtension(extensionId);
-    } else if($(this).hasClass('extensionCancelScheduledForUninstallButton')) {
-        window.extensions_manager_model.cancelExtensionScheduledForUninstall($(this).attr('extensionname'));
-    } else if($(this).hasClass('extensionScheduleUninstallButton')) {
-        window.extensions_manager_model.scheduleExtensionForUninstall($(this).attr('extensionname'));
-    }
+      } 
+    else 
+      { 
+      timer = setTimeout("callbackTimer()",1000);
+      $( "#modalDialog" ).dialog({
+      height: 200,
+      width: 500,
+      modal: true ,
+      resizable: false,
+      buttons: {
+        Cancel: function() {          
+          $( this ).dialog( "close" );
+          if(timer != false) clearTimeout(timer);
+          window.DataStoreGUI.cancelDownload();
+        }
+      }
+      });
+      $('.ui-draggable .ui-dialog-titlebar').hide();
+      $("#modalDialog").html("Downloading "+extensionName+"<br/><br/><progress id='progressBar' style='width:100%' value='1' max='100'></progress><br/><span id='progressDownload'></span>");
+      window.DataStoreGUI.download(url, urlThumbnail);
+      }
+}
+
+midas.slicerdatastore.progressEvent = function(progress)
+{
+  $('#progressDownload').html(progress+"%");
+}
+midas.slicerdatastore.downloadCompleted = function(progress)
+{
+  $( "#modalDialog" ).dialog( "close" );
 }
 
 /**
@@ -23,17 +69,7 @@ midas.slicerdatastore.extensionButtonClick = function() {
  * @param extensionName Name of the extension associated with the button to update
  */
 midas.slicerdatastore.updateExtensionButtonState = function(extensionName) {
-    if(!window.extensions_manager_model) {
-        midas.slicerdatastore.setExtensionButtonState(extensionName, 'Download');
-    } else {
-        var buttonState = 'Install';
-        if(window.extensions_manager_model.isExtensionScheduledForUninstall(extensionName)) {
-          buttonState = 'CancelScheduledForUninstall';
-        } else if(window.extensions_manager_model.isExtensionInstalled(extensionName)) {
-          buttonState = 'ScheduleUninstall';
-        }
-        midas.slicerdatastore.setExtensionButtonState(extensionName, buttonState);
-    }
+  midas.slicerdatastore.setExtensionButtonState(extensionName, 'Download');
 }
 
 /**
