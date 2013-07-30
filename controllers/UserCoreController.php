@@ -22,6 +22,11 @@ class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
 {   
   function registerAction()
     {
+    if(strpos($_SERVER['HTTP_REFERER'], "slicerdatastore") === false)
+      {
+      $this->callCoreAction();
+      return;
+      }
     if(isset(Zend_Registry::get('configGlobal')->closeregistration) && Zend_Registry::get('configGlobal')->closeregistration == "1")
       {
       throw new Zend_Exception('New user registration is disabled.');
