@@ -19,22 +19,7 @@
 =========================================================================*/
 
 class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
-{
-  function indexAction()
-    {
-    $this->callCoreAction();    
-    } // end method indexAction
-    
-  function settingsAction()
-    {
-    $this->callCoreAction();    
-    } // end method indexAction
-    
-  function ajaxregisterAction()
-    {
-    $this->callCoreAction();    
-    } // end method indexAction
-    
+{   
   function registerAction()
     {
     if(isset(Zend_Registry::get('configGlobal')->closeregistration) && Zend_Registry::get('configGlobal')->closeregistration == "1")
