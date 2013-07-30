@@ -1,0 +1,266 @@
+
+div.registerContent {
+  margin-left: auto;
+  margin-right: auto;
+  width: 900px;
+}
+
+div.registerInfo {
+  float: left;
+  color: white;
+  width: 250px;
+  border: 1px solid grey;
+  margin-top: 15px;
+  margin-bottom: 7px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #363535;
+  padding: 8px;
+}
+
+div.registerInfo h4{
+  margin-top: 2px;
+  margin-left: 5px;
+  color: #84acc8; 
+  margin-bottom: 3px;
+}
+div.registerInfo h3{
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+}
+div.registerInfo ul{
+  list-style: circle;
+  padding-left: 20px;
+  padding-top: 3px;
+  margin-top: 0px;
+}
+div.registerInfo li{
+  color: #ddd;
+}
+div.registerInfo a{
+  color: #84acc8;
+  text-decoration: underline;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+div.register {
+  
+}
+
+/*-------------------------------------------------
+Register Form
+-------------------------------------------------*/
+form#registerForm {
+  color: white;
+  margin-left: 280px;
+  padding-top: 19px;
+}
+
+form#registerForm div {
+  
+}
+
+form#registerForm input[type=text],form#registerForm input[type=password]
+  {
+  color: black;
+  height: 18px;
+  width: 185px;
+
+  font: normal 13px/100% Verdana, Tahoma, sans-serif;
+  border: solid 1px #b7b7b7;
+	outline: 0;
+	background: #FFFFFF  left top repeat-x;
+	background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+	box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	-moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	-webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+}
+
+form#registerForm input[type=text]:hover,form#registerForm input[type=password]:hover
+  {
+  background: white !important;
+}
+
+form#registerForm input[type=submit] {
+  
+}
+
+form#registerForm div span img {
+  position: relative;
+  top: 3px;
+}
+
+form#registerForm .termLabel {
+  display: block;
+}
+
+form#registerForm div.registerError {
+  position: absolute;
+  color: #57BB7D;
+}
+
+form#registerForm div.registerError span {
+  position: relative;
+  top: -15px;
+  display: none;
+}
+
+a.termOfService {
+  color: #F3F1EC;
+}
+
+a.termOfService:hover {
+  color: #F3F1EC;
+}
+
+
+/*-------------------------------------------------
+GENERIC
+-------------------------------------------------*/
+
+
+form.genericForm{
+  
+}
+
+form.genericForm dt label{
+display: block;
+float: left;
+margin-right: 5px;
+text-align: right;
+width: 130px;
+}
+
+
+form.genericForm input[type=submit],form.genericForm input[type=button]
+{
+margin-left: 0px!important;
+background: #F6F9FE url(images/ui-bg_glass_85_f6f9fe_1x400.png) repeat-x 50% 50%;
+border: 1px solid grey;
+color: #2E6E9E;
+font-weight: bold;
+cursor: pointer;
+cursor: pointer;
+display: inline-block;
+margin-right: 0.1em;
+overflow: visible;
+position: relative;
+text-align: center;
+text-decoration: none !important;
+zoom: 1;
+-webkit-box-align: center;
+-webkit-box-sizing: border-box;
+line-height: 1.4;
+}
+
+form.genericForm input[type=submit]:hover,form.genericForm input[type=button]:hover
+{
+color: #1d5987; text-decoration: none;
+background: #cbd9e3;
+background-image: none;
+}
+
+
+form.genericForm input[type=submit][disabled],form.genericForm input[type=button][disabled],.globalButton[disabled]
+{
+color: grey; text-decoration: none;
+background: #dbdbdb;
+background-image: none;
+cursor: default;
+}
+
+form.genericForm input[type=submit][disabled]:hover,form.genericForm input[type=button][disabled]:hover,.globalButton[disabled]:hover
+{
+color: grey!important; text-decoration: none;
+background: #dbdbdb!important;
+background-image: none;
+cursor: default;
+}
+
+
+
+/*-------------------------------------------------
+GENERIC DIV
+-------------------------------------------------*/
+
+form.genericForm{
+  
+}
+
+form.genericForm div{
+}
+
+form.genericForm div label{
+display: block;
+float: left;
+margin-right: 5px;
+text-align: right;
+width: 130px;
+text-align: left;
+}
+
+form.genericForm input[type=text],form.genericForm input[type=password] ,form.genericForm textarea{
+  margin-right: 10px;
+  color: black;
+  height: 18px;
+  font: normal 13px/100% Verdana, Tahoma, sans-serif;
+  border: solid 1px #E5E5E5;
+	outline: 0;
+	background: #FFFFFF  left top repeat-x;
+	background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+	box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	-moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	-webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+}
+
+form.genericForm input[type=text],form.genericForm input[type=password] {
+  width:250px;
+}
+
+form.genericForm textarea{
+  width:247px;
+  height:35px;
+}
+
+form.genericForm input[type=text]:hover,form.genericForm input[type=password]:hover, form.genericForm textarea:hover{
+  background: white;
+}
+
+
+form.genericForm div input[type=submit], input.globalButton ,form.genericForm input[type=button]
+{
+margin-left: 208px;
+background: #F6F9FE url(images/ui-bg_glass_85_f6f9fe_1x400.png) repeat-x 50% 50%;
+border: 1px solid grey;
+color: #2E6E9E;
+font-weight: bold;
+cursor: pointer;
+display: inline-block;
+margin-right: 0.1em;
+overflow: visible;
+position: relative;
+text-align: center;
+text-decoration: none !important;
+zoom: 1;
+-webkit-box-align: center;
+-webkit-box-sizing: border-box;
+line-height: 1.4;
+font-family: Verdana, 'Lucida Grande', 'Lucida Sans Unicode', helvetica, arial, verdana, sans-serif;
+}
+
+form.genericForm input[type=submit]:hover ,input.globalButton:hover
+{
+color: #1d5987; text-decoration: none;
+background: #cbd9e3;
+background-image: none;
+
+}
+
+
+

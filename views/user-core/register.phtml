@@ -1,0 +1,61 @@
+<?php
+/*=========================================================================
+MIDAS Server
+Copyright (c) Kitware SAS. 20 rue de la Villette. All rights reserved.
+69328 Lyon, FRANCE.
+
+See Copyright.txt for details.
+This software is distributed WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the above copyright notices for more information.
+=========================================================================*/
+?>
+<link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/user-core/user-core.register.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<div class="registerContent">  
+  <div class="register">
+    <form id="registerForm" style="margin-left:191px;padding-top: 0px;" class="genericForm" method="<?php echo $this->form['method']?>"  action="<?php echo $this->form['action']?>">
+     <h1 class="subTitle">Register:</h1>
+      <div class="registerError">
+       <span></span><br/>
+     </div>
+      <div >
+        <label for="email"><?php echo $this->t("E-mail")?></label>
+        <?php echo $this->form['email']?>
+      </div>
+      <div >
+        <label for="firstname"><?php echo $this->t("First Name")?></label>
+        <?php echo $this->form['firstname']?>
+      </div>
+      <div>
+        <label for="lastname"><?php echo $this->t("Last Name")?></label>
+        <?php echo $this->form['lastname']?>
+      </div>
+      <div>
+        <label for="password1"><?php echo $this->t("Password")?></label>
+        <?php echo $this->form['password1']?>
+      </div>
+      <div>
+        <label for="password2"><?php echo $this->t("Confirm Password")?></label>
+        <?php echo $this->form['password2']?>
+      </div>
+      <div id="conditionsBlock">
+        <label for="conditions"></label>
+         <?php echo $this->t("I read and accepted the")?> <a class='termOfService' href='#'><?php echo $this->t('terms of service')?></a><?php echo $this->form['conditions']?>
+      </div>
+      <div >
+         <?php echo $this->form['submit']?>
+         <img style="display: none;" alt="" src="<?php echo $this->coreWebroot;?>/public/images/icons/loading.gif" id="registerWaiting" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="jsonRegister"  style="display:none;">
+  <?php echo $this->jsonRegister?>
+</div>
+
+<?php
+echo '<script type="text/javascript" src="' . $this->coreWebroot . '/public/js/user/user.register.js"></script>';
+?>

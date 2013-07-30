@@ -1,0 +1,45 @@
+<?php
+/*=========================================================================
+MIDAS Server
+Copyright (c) Kitware SAS. 20 rue de la Villette. All rights reserved.
+69328 Lyon, FRANCE.
+
+See Copyright.txt for details.
+This software is distributed WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the above copyright notices for more information.
+=========================================================================*/
+echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/jquery/jquery.form.js"></script>';
+echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/user/user.login.js"></script>';
+?>
+<link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/user/user.loginform.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<form id="loginForm" method="<?php echo $this->form['method']?>"  action="<?php echo $this->webroot?>/user/login?previousuri=<?php echo urlencode($this->webroot."/slicerdatastore/upload")?>">
+  <div style="float:right;">
+    <br/>
+    <br/>
+    <br/>
+    <!--<input type="submit" name="submit" id="submit" value="Log in With Google" class="globalButton"> -->
+  </div>
+  <div style="width: 277px">
+    <h1 class="subTitle">Log in with your email:</h1>
+    <label for="email"><?php echo $this->t('E-mail')?></label>
+    <br/>
+    <?php echo $this->form['email']?> <br/>
+    <label for="password"><?php echo $this->t('Password')?><br/>
+      <?php echo $this->form['password']?><br/>
+    <input type="hidden" name="previousuri" value=""/>
+    
+
+   
+     <img style="display: none;" alt="" src="<?php echo $this->coreWebroot;?>/public/images/icons/loading.gif" id="loginWaiting" />
+     <br/>
+     <?php echo $this->form['submit']?>  
+  </div>
+
+  <br/> 
+  <a class="registerLink" style='cursor:pointer;float:left;font-size: 12px;text-decoration: underline;'><?php echo $this->t("Register here")?></a>
+
+</form>
+<br/>

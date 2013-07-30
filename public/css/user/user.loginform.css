@@ -1,0 +1,39 @@
+
+form#loginForm input[type="text"], form#loginForm input[type="password"] {
+  margin-right: 10px;
+  height: 18px;
+  width: 220px;
+  font: normal 13px/100% Verdana, Tahoma, sans-serif;
+  border: solid 1px #b7b7b7;
+	outline: 0;
+	background: #FFFFFF  left top repeat-x;
+	background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+	box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	-moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	-webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+}
+
+.ui-menu .ui-menu-item a{
+  font-size:10px!important;
+}
+
+input.globalButton 
+{
+  background: #F6F9FE url(images/ui-bg_glass_85_f6f9fe_1x400.png) repeat-x 50% 50%;
+  border: 1px solid grey;
+  color: #2E6E9E;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.1em;
+  overflow: visible;
+  position: relative;
+  text-align: center;
+  text-decoration: none !important;
+  zoom: 1;
+  -webkit-box-align: center;
+  -webkit-box-sizing: border-box;
+  line-height: 1.4;
+  font-family: Verdana, 'Lucida Grande', 'Lucida Sans Unicode', helvetica, arial, verdana, sans-serif;
+  }

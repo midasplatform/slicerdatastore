@@ -1,0 +1,27 @@
+div.loginElement{
+  height:200px;
+  margin-left:auto;
+  margin-right:auto;
+  width:255px;
+  padding: 5px;
+  background: white;
+  border: 1px solid 
+  #EEE;
+  -moz-box-shadow: 1px 1px 5px rgba(0,0,0,.1);
+  -webkit-box-shadow: 1px 1px 5px 
+  rgba(0, 0, 0, .1);
+  box-shadow: 1px 1px 5px 
+  rgba(0, 0, 0, .1);
+}
+h1.subTitle{
+  font-size:16px;
+   color:#333;
+  text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;
+  margin-top:0px;
+}
+
+
+h1#subTitle{
+   color:#333;
+  text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;
+}
