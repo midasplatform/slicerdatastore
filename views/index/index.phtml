@@ -39,6 +39,14 @@ echo $this->doctype()
 </head>
 <body>
   <div id="modalDialog" style="display:none;"></div>
+  <div class="MainDialog" style="display:none;">
+    <div class="MainDialogContent">
+    </div>
+    <div class="MainDialogLoading">
+      <img alt="" src="/Midas/Midas3/core/public/images/icons/loading.gif" />
+    </div>
+    <input type="hidden" class="DialogContentPage"/>
+  </div>
   <div class="viewWrapperSlicer">
       <div class="extensionsHeader">
         <div class="extensionsTitle">Datasets</div>
@@ -109,6 +117,7 @@ echo $this->doctype()
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.empty.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.callback.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.notice.js');
+  $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/midas.dialog.js');
   $this->headScript()->appendFile($this->webroot.'/modules/api/public/js/common/common.ajaxapi.js');
   $this->headScript()->appendFile($this->webroot.'/modules/ratings/public/js/star_rating/jquery.ui.stars.min.js');
   $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js');

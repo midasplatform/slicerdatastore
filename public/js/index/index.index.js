@@ -141,7 +141,7 @@ return {
           midas.slicerdatastore.renderExtension(extension, index);
       });
       if(retVal.data.total == 0) {
-          $('.paginationMessage').show().text('No extensions found');
+          $('.paginationMessage').show().text('No dataset found');
       }
   },
   'afterLoad': function(elementsLoaded){
@@ -306,6 +306,12 @@ midas.slicerdatastore.fetchCategories = function () {
 
 var currentSearch = "";
 $(document).ready(function() {
+  
+     $('img.kwLogo').click(function () {
+        var dlgWidth = Math.min($(window).width() * 0.9, 600);
+        midas.loadDialog('KWInfo', '/slicerdatastore/index/kwinfo');
+        midas.showDialog('Slicer Data Store', false, {width: dlgWidth})
+    });
     midas.slicerdatastore.category = json.category;
 
     midas.slicerdatastore.fetchCategories();

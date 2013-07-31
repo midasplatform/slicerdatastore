@@ -33,4 +33,12 @@ class Slicerdatastore_IndexController extends Slicerdatastore_AppController
     $this->view->json['category'] = $this->_getParam("category");
     }
     
+    
+  /**
+   * Call this to render the kitware info dialog
+   */
+  public function kwinfoAction()
+    {
+    $this->disableLayout();
+    }
 } // end class
