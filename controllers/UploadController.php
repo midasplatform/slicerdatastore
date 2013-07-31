@@ -30,11 +30,12 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
     $this->disableLayout();
     if(!$this->logged) $this->_redirect ("/slicerdatastore/user/login");  
         
-    // check if the default parent folders exist. if not, create them
-    $communityDao = MidasLoader::loadModel("Community")->getByName('Data Store');
-    if(!$communityDao)
+    // check if the configuration is valid
+    $folderId = MidasLoader::loadModel("Setting")->getValueByName('rootFolder', "slicerdatastore");
+    $folder = MidasLoader::loadModel("Folder")->load($folderId);
+    if(!$folder)
       {
-      throw new Zend_Exception("Unable to find Community called Data Store.");
+      throw new Zend_Exception("Unable to find Root Folder. Please check the configuration");
       }
       
     $this->view->json['upload'] = array();
@@ -54,18 +55,12 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
       {
       throw new Zend_Exception(MIDAS_LOGIN_REQUIRED);
       }
-    // check if the default parent folders exist. if not, create them
-    $communityDao = MidasLoader::loadModel("Community")->getByName('Data Store');
-    if(!$communityDao)
+    $folderId = MidasLoader::loadModel("Setting")->getValueByName('rootFolder', "slicerdatastore");
+    $folder = MidasLoader::loadModel("Folder")->load($folderId);
+    if(!$folder)
       {
-      throw new Zend_Exception("Unable to find Community called Data Store.");
+      throw new Zend_Exception("Unable to find Root Folder. Please check the configuration");
       }
-    $folders = $communityDao->getFolder()->getFolders();
-    if(count($folders) == 0)
-      {
-      throw new Zend_Exception("Unable to find Folder.");
-      }
-    $folder = end($folders);  
       
     $itenname = $this->_getParam("name");
     $category = $this->_getParam("category");

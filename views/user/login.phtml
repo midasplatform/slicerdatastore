@@ -17,7 +17,7 @@ $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.em
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.callback.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.dialog.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.notice.js');
-$this->headScript()->appendFile($this->webroot . '/privateModules/slicerdatastore/public/js/user/user.login.js');
+$this->headScript()->appendFile($this->webroot . '/'.$this->moduleParent.'/slicerdatastore/public/js/user/user.login.js');
 echo $this->doctype()
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
