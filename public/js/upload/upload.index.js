@@ -5,7 +5,7 @@ function callbackTimer()
   if(stats == "-1")
     {
     $( "#modalDialog" ).dialog( "close" );
-    $( "#modalDialog" ).html('You successfully upload the dataset. It will be available in the next few minutes.')
+    $( "#modalDialog" ).html('You successfully uploaded the dataset. It will be available in the next few minutes.')
     $( "#modalDialog" ).dialog({
           height: 200,
           width: 500,
