@@ -7,7 +7,7 @@ function callbackTimer()
     $( "#modalDialog" ).dialog( "close" );
     $( "#modalDialog" ).html('You successfully uploaded the dataset. It will be available in the next few minutes.')
     $( "#modalDialog" ).dialog({
-          height: 200,
+          height: 250,
           width: 500,
           modal: true ,
           resizable: false,
@@ -43,7 +43,7 @@ $(document).ready(function(){
       }
     $(this).remove();
     $( "#modalDialog" ).dialog({
-      height: 200,
+      height: 250,
       width: 500,
       modal: true ,
       resizable: false,

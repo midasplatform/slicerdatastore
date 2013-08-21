@@ -29,6 +29,7 @@ class Slicerdatastore_ViewController extends Slicerdatastore_AppController
     {
     $this->disableLayout();
     $itemId = $this->_getParam("itemId");
+    $delete = $this->_getParam("delete");
     if(!isset($itemId) || !is_numeric($itemId))
       {
       throw new Zend_Exception("itemId should be a number");
@@ -42,7 +43,13 @@ class Slicerdatastore_ViewController extends Slicerdatastore_AppController
       {
       throw new Zend_Exception('Read permission required', 403);
       }
-      
+    $this->view->isOwner = MidasLoader::loadModel("Item")->policyCheck($itemDao, $this->userSession->Dao, MIDAS_POLICY_ADMIN);
+    if(isset($delete) && $delete == "true" && $this->view->isOwner)
+      {
+      MidasLoader::loadModel("Item")->delete($itemDao);
+      $this->_redirect("/slicerdatastore");
+      }
+        
     $metadataRevision = false;
     foreach($itemDao->getRevisions() as $revision)
       {
@@ -78,9 +85,14 @@ class Slicerdatastore_ViewController extends Slicerdatastore_AppController
       }
     $this->view->item = $itemDao;        
     $this->view->metadata = $metadata;    
-    $this->view->screenshots = $screenshots;        
+    $this->view->screenshots = $screenshots;       
+    
+    $lastRevision = MidasLoader::loadModel("Item")->getLastRevision($itemDao);
+    $bitstreams = $lastRevision->getBitstreams();    
+        
     $this->view->json['category'] = $this->view->category;    
     $this->view->json['item'] = $itemDao;    
+    $this->view->json['bitstream'] = end($bitstreams);    
     $this->view->json['modules']['ratings'] = MidasLoader::loadModel('Itemrating', 'ratings')->getAggregateInfo($itemDao);
     if($this->userSession->Dao)
       {

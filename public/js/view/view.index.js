@@ -111,6 +111,7 @@ $(document).ready(function() {
 
     $('input.extensionActionButton')
         .attr('element', json.item.item_id)
+        .attr('bitstream', json.bitstream.bitstream_id)
         .attr('extensionname', json.item.name);
     midas.slicerdatastore.updateExtensionButtonState(json.item.name);
 
@@ -125,8 +126,6 @@ $(document).ready(function() {
     $('div.loginToRate').appendTo('#ratingsDiv');
     $('div.loginToRate').css('float', 'left');
 
- 
-
     var url = json.global.webroot+'/slicerdatastore';
 
     $('#rootBreadcrumb').attr('href', url);
@@ -136,4 +135,11 @@ $(document).ready(function() {
             window.location.reload();
         });
     });
+    
+    $('#deleteDataSet').click(function(){
+      if(confirm("Do you really want to delete the dataset?"))
+        {
+        window.location.href = url+"/view?itemId="+json.item.item_id+"&delete=true";
+        }
+    })
 });

@@ -20,17 +20,21 @@ midas.slicerdatastore.renderExtension = function(extension, index) {
     var extDiv = $('#extensionTemplate').clone()
       .attr('id', 'extensionWrapper_'+extension.id);
     extDiv.attr('element', extension.id)
+    extDiv.attr('bitstream', extension.bitstream_id)
     .attr('extensionname', extension.title);
     extDiv.find('a.extensionName').html(extension.title)
       .attr('qtip', extension.title)
       .attr('element', extension.id)
+      .attr('bitstream', extension.bitstream_id)
       .click(midas.slicerdatastore.extensionClick);
     extDiv.find('img.extensionIcon').attr('src', json.global.webroot+'/item/thumbnail?itemId='+extension.id)
       .attr('element', extension.id)
+      .attr('bitstream', extension.bitstream_id)
       .attr('extensionname', extension.title)
       .click(midas.slicerdatastore.extensionClick);
     extDiv.find('input.extensionActionButton')
       .attr('element', extension.id)
+      .attr('bitstream', extension.bitstream_id)
       .attr('extensionname', extension.title);
 
     var average = extension.rating.average;
@@ -335,7 +339,6 @@ $(document).ready(function() {
     $('#searchInput').unbind('keyup').keyup(function(){
       if(currentSearch != $(this).val())
         {
-        console.log('tt');
         midas.slicerdatastore.pageOffset = 0;
         midas.slicerdatastore.applyFilter(true);
         }

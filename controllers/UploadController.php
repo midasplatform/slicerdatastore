@@ -92,7 +92,7 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
     $uploadComponent = MidasLoader::loadComponent('Httpupload');
     $uploadComponent->setTmpDirectory($this->getTempDirectory());
     $token = $uploadComponent->generateToken(array('filename' => $filename), $this->userSession->Dao->getKey().'/'.$item->getKey());
-    $url = $this->getServerURL().$this->view->webroot."/api/json?method=midas.upload.perform&mode=multipart&file=1&filename=". urlencode($filename)."&uploadtoken=". $token['token']."&length=";
+    $url = $this->getServerURL().$this->view->webroot."/api/json?method=midas.upload.perform&mode=stream&file=1&filename=". urlencode($filename)."&uploadtoken=". $token['token']."&length=";
     echo JsonComponent::encode($url);
     }
     

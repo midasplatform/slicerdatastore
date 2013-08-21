@@ -27,8 +27,9 @@ function callbackTimer()
   }
 midas.slicerdatastore.extensionButtonClick = function() {
     var extensionId = $(this).attr('element');
+    var bitstreamId = $(this).attr('bitstream');
     var extensionName = $(this).attr('extensionname');
-    var url = json.global.httpUrl+json.global.webroot+'/download?items='+extensionId+'&name='+extensionId+"_"+extensionName;
+    var url = json.global.httpUrl+json.global.webroot+'/download/bitstream/'+bitstreamId+'/'+extensionId+"_"+extensionName+"?name="+extensionId+"_"+extensionName;
     var urlThumbnail = json.global.httpUrl+json.global.webroot+'/item/thumbnail?itemId='+extensionId;
     if(!window.DataStoreGUI) {        
         window.location.assign(url);
@@ -37,7 +38,7 @@ midas.slicerdatastore.extensionButtonClick = function() {
       { 
       timer = setTimeout("callbackTimer()",1000);
       $( "#modalDialog" ).dialog({
-      height: 200,
+      height: 250,
       width: 500,
       modal: true ,
       resizable: false,

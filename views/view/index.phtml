@@ -74,9 +74,10 @@ echo $this->doctype()
     </div>
   </div>
   <div class="left_column">
-    <div class="icon_art">
-      <img src="<?php echo $this->webroot ?>/item/thumbnail?itemId=<?php echo $this->item->getKey()?>" width="128" height="128" />
+    <div class="extensionIconWrapper">
+        <img  alt="" src="<?php echo $this->webroot ?>/item/thumbnail?itemId=<?php echo $this->item->getKey()?>" class="extensionIcon" />
     </div>
+
     <div class="extensionActionButtonWrapper">
       <input type="button" class="extensionActionButton" value=""/>
     </div>
@@ -90,6 +91,16 @@ echo $this->doctype()
       <div class="info_item">
         <?php echo $this->item->getDownload() ?> downloads
       </div>
+      <?php
+      if($this->isOwner)
+        {
+        ?>
+        <div class="info_item">
+          <a style="color:#56758b;cursor:pointer;" id="deleteDataSet">Delete the dataset</a>
+        </div>
+      <?php
+        }
+        ?>
     </div>
     <div class="rating_area">
       <?php echo $this->element('rating', 'ratings'); ?>

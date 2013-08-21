@@ -85,7 +85,8 @@ class Slicerdatastore_ApiComponent extends AppComponent
     $itemIds = array();
     $componentLoader = new MIDAS_ComponentLoader();
     $solrComponent = $componentLoader->loadComponent('Solr', 'solr');
-    $authComponent = $componentLoader->loadComponent('Authentication', 'api');
+    
+    $authComponent = $componentLoader->loadComponent('Authentication');
     $userDao = $authComponent->getUser($args,
                                        Zend_Registry::get('userSession')->Dao);    
     
@@ -118,7 +119,10 @@ class Slicerdatastore_ApiComponent extends AppComponent
       if($item && $itemModel->policyCheck($item, $userDao))
         {
         $rating = MidasLoader::loadModel("Itemrating", 'ratings')->getAggregateInfo($item);
-        $items[] = array( 'title' => $item->getName(), 'rating' => $rating,
+        $lastRevision = MidasLoader::loadModel("Item")->getLastRevision($item);
+        $bitstream = end($lastRevision->getBitstreams());    
+           
+        $items[] = array( 'title' => $item->getName(), 'rating' => $rating, 'bitstream_id' => $bitstream->getKey(),
             'type' => $item->getType(), 'id' => $item->getKey(), 'description' => $item->getDescription());
         $count++;
         if($count >= $limit)
