@@ -34,7 +34,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
   private function _getUser($args)
     {
     $componentLoader = new MIDAS_ComponentLoader();
-    if(file_exists(BASE_PATH."/modules/api/controllers/components/AuthentificationComponent.php"))
+    if(file_exists(BASE_PATH."/modules/api/controllers/components/AuthenticationComponent.php"))
       {
       $authComponent = $componentLoader->loadComponent('Authentication', 'api');
       }           
@@ -90,7 +90,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
     $componentLoader = new MIDAS_ComponentLoader();
     $solrComponent = $componentLoader->loadComponent('Solr', 'solr');
     
-    if(file_exists(BASE_PATH."/modules/api/controllers/components/AuthentificationComponent.php"))
+    if(file_exists(BASE_PATH."/modules/api/controllers/components/AuthenticationComponent.php"))
       {
       $authComponent = $componentLoader->loadComponent('Authentication', 'api');
       }           
