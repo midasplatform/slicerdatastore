@@ -32,7 +32,7 @@ midas.slicerdatastore.extensionButtonClick = function() {
     var url = json.global.httpUrl+json.global.webroot+'/download/bitstream/'+bitstreamId+'/'+extensionId+"_"+extensionName+"?name="+extensionId+"_"+extensionName;
     var urlThumbnail = json.global.httpUrl+json.global.webroot+'/item/thumbnail?itemId='+extensionId;
     
-    if(false && !window.DataStoreGUI) {        
+    if(!window.DataStoreGUI) {        
         window.location.assign(url);
       } 
     else 
