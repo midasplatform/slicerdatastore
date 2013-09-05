@@ -31,7 +31,8 @@ midas.slicerdatastore.extensionButtonClick = function() {
     var extensionName = $(this).attr('extensionname');
     var url = json.global.httpUrl+json.global.webroot+'/download/bitstream/'+bitstreamId+'/'+extensionId+"_"+extensionName+"?name="+extensionId+"_"+extensionName;
     var urlThumbnail = json.global.httpUrl+json.global.webroot+'/item/thumbnail?itemId='+extensionId;
-    if(!window.DataStoreGUI) {        
+    
+    if(false && !window.DataStoreGUI) {        
         window.location.assign(url);
       } 
     else 
@@ -52,7 +53,15 @@ midas.slicerdatastore.extensionButtonClick = function() {
       });
       $('.ui-draggable .ui-dialog-titlebar').hide();
       $("#modalDialog").html("Downloading "+extensionName+"<br/><br/><progress id='progressBar' style='width:100%' value='1' max='100'></progress><br/><span id='progressDownload'></span>");
-      window.DataStoreGUI.download(url, urlThumbnail);
+      
+      try
+        {
+        window.DataStoreGUI.download(url, urlThumbnail);
+        }
+      catch(err)
+        {
+        $("#modalDialog").html("An error occurred while downloading the dataset.");
+        }
       }
 }
 
