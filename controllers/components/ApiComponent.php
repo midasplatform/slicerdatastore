@@ -34,7 +34,11 @@ class Slicerdatastore_ApiComponent extends AppComponent
   private function _getUser($args)
     {
     $componentLoader = new MIDAS_ComponentLoader();
-    $authComponent = $componentLoader->loadComponent('Authentication', 'api');
+    if(file_exists(BASE_PATH."/modules/api/controllers/components/AuthentificationComponent.php"))
+      {
+      $authComponent = $componentLoader->loadComponent('Authentication', 'api');
+      }           
+    else  $authComponent = $componentLoader->loadComponent('Authentication');
     return $authComponent->getUser($args, null);
     }
 
@@ -86,7 +90,11 @@ class Slicerdatastore_ApiComponent extends AppComponent
     $componentLoader = new MIDAS_ComponentLoader();
     $solrComponent = $componentLoader->loadComponent('Solr', 'solr');
     
-    $authComponent = $componentLoader->loadComponent('Authentication', 'api');
+    if(file_exists(BASE_PATH."/modules/api/controllers/components/AuthentificationComponent.php"))
+      {
+      $authComponent = $componentLoader->loadComponent('Authentication', 'api');
+      }           
+    else  $authComponent = $componentLoader->loadComponent('Authentication');
     $userDao = $authComponent->getUser($args,
                                        Zend_Registry::get('userSession')->Dao);    
     

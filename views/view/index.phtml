@@ -26,8 +26,8 @@ echo $this->doctype()
   <meta name="robots" content="index, follow, all" />
   <!-- Import CSS -->
   <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
-  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/common/common.css" />
-  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/view/view.index.css" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/common/common.css?v=<?php echo VERSION_CACHE?>" />
+  <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/view/view.index.css?v=<?php echo VERSION_CACHE?>" />
   <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/lightbox/jquery.lightbox-0.5.css" />
   <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore//public/css/imgliquid/imgLiquid.js.css" />
   <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery.qtip.min.css" />
@@ -213,8 +213,8 @@ echo $this->doctype()
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jquery.autogrow-textarea.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/jquery/jquery.form.js');
   $this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery.qtip.min.js');
-  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js');
-  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/view/view.index.js');
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js?v='.VERSION_CACHE);
+  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/view/view.index.js?v='.VERSION_CACHE);
   $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/lightbox/jquery.lightbox-0.5.pack.js');
   $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/imgliquid/imgLiquid-min.js');
   $this->headScript()->appendFile($this->webroot.'/modules/ratings/public/js/star_rating/jquery.ui.stars.min.js');

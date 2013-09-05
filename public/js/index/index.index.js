@@ -111,9 +111,9 @@ midas.slicerdatastore.pageLimit = function(){
  */
 midas.slicerdatastore.scrollPaginationOptions = function(pageLimit){
 return {
-  'contentPage': json.global.webroot+'//api/json?method=midas.slicerdatastore.listdatasets',
+  'contentPage': json.global.webroot+'/api/json?method=midas.slicerdatastore.listdatasets',
   'contentData': function(){
-    var currentPageLimit = typeof pageLimit !== 'undefined' ? pageLimit : midas.slicerdatastore.pageLimit();
+    var currentPageLimit = midas.slicerdatastore.pageLimit();
     contentData = {
       category: midas.slicerdatastore.category,
       os: midas.slicerdatastore.os,
@@ -122,9 +122,8 @@ return {
       //release: midas.slicerdatastore.release,
       revision: midas.slicerdatastore.revision,
       limit: currentPageLimit,
-      offset: midas.slicerdatastore.pageOffset
+      offset: $('.extensionWrapper').length -1  
     };
-    midas.slicerdatastore.pageOffset += currentPageLimit;
     // Stop fetch on scroll if "not the first query" and "all items have been fetched"
     if (midas.slicerdatastore.totalResults != -1 &&
         midas.slicerdatastore.pageOffset >= midas.slicerdatastore.totalResults){
@@ -140,6 +139,7 @@ return {
         {
         midas.slicerdatastore.resetFilter();
         }
+
       midas.slicerdatastore.totalResults = retVal.data.total;
       $.each(retVal.data.items, function(index, extension) {
           midas.slicerdatastore.renderExtension(extension, index);
