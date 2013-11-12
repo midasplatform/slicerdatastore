@@ -108,6 +108,7 @@ $(document).ready(function() {
       $('div.screenshotContainer').show().imgLiquid({
           fill: false
       });
+      
 
     $('input.extensionActionButton')
         .attr('element', json.item.item_id)
@@ -119,6 +120,16 @@ $(document).ready(function() {
         $('#loginToComment,#loginToRate').unbind('click').click(midas.slicerdatastore.doLogin);
         $('#registerToComment,#registerToRate').unbind('click').click(midas.slicerdatastore.doRegister);
     });
+    
+    $('#datasetUrl').click(function(){
+      $('#dialogUrl').dialog({
+        width:450
+      });
+      $('#dialogUrl input').select();
+      $('#dialogUrl input').click(function(){
+        $(this).select();
+      })
+    })
 
     $('#commentsDiv h4').remove();
     $('#ratingsDiv h4').remove();

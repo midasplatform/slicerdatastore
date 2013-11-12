@@ -29,6 +29,8 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
     {
     $this->disableLayout();
     if(!$this->logged) $this->_redirect ("/slicerdatastore/user/login");  
+    
+    $itemId = $this->_getParam("itemId");
         
     // check if the configuration is valid
     $folderId = MidasLoader::loadModel("Setting")->getValueByName('rootFolder', "slicerdatastore");
@@ -38,7 +40,15 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
       throw new Zend_Exception("Unable to find Root Folder. Please check the configuration");
       }
       
+    $itemDaoTmp = MidasLoader::loadModel("Item")->load($itemId);
+    $this->view->item = false;
+    if(isset($itemId) && $itemDaoTmp && MidasLoader::loadModel("Item")->policyCheck($itemDaoTmp, $this->userSession->Dao, MIDAS_POLICY_ADMIN))
+      {
+      $this->view->item = $itemDaoTmp;
+      }
+      
     $this->view->json['upload'] = array();
+    $this->view->json['upload']['itemId'] = (isset($itemId))? $itemId:-1;
     $this->view->json['upload']['availableTags'] = MidasLoader::loadComponent('Api', 'slicerdatastore')->categories(array());
     }
    
@@ -62,20 +72,36 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
       throw new Zend_Exception("Unable to find Root Folder. Please check the configuration");
       }
       
+    $itemId = $this->_getParam("itemId");
+    $itemDaoTmp = MidasLoader::loadModel("Item")->load($itemId);
+    $mainItem = false;
+    if($itemDaoTmp && MidasLoader::loadModel("Item")->policyCheck($itemDaoTmp, $this->userSession->Dao, MIDAS_POLICY_ADMIN))
+      {
+      $mainItem = $itemDaoTmp;
+      }
+    
     $itenname = $this->_getParam("name");
     $category = $this->_getParam("category");
+    $changes = $this->_getParam("changes");
     if($category == "") $category = "Others";
-    else $category = ucfirst ($category);
-      
+    else $category = ucfirst ($category);      
     
-    $item = MidasLoader::loadModel('Item')->createItem($itenname, "", $folder);    
+    if(!$mainItem) $item = MidasLoader::loadModel('Item')->createItem($itenname, "", $folder);  
+    else
+      {
+      $item = $mainItem;
+      $itenname = $item->getName();
+      $metadata = $this->getMetaDataByQualifier(MidasLoader::loadModel('Item')->getLastRevision($item), "category");
+      if($metadata) $category = $metadata->getValue();
+      }
+    
     if($item === false)
       {
       throw new Exception('Create new item failed', MIDAS_INTERNAL_ERROR);
       }
     Zend_Loader::loadClass('ItemRevisionDao', BASE_PATH.'/core/models/dao');
     $revision = new ItemRevisionDao();
-    $revision->setChanges('Initial revision');
+    $revision->setChanges($changes);
     $revision->setUser_id($this->userSession->Dao->getKey());
     $revision->setDate(date('c'));
     $revision->setLicenseId(null);
@@ -92,7 +118,7 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
     $uploadComponent = MidasLoader::loadComponent('Httpupload');
     $uploadComponent->setTmpDirectory($this->getTempDirectory());
     $token = $uploadComponent->generateToken(array('filename' => $filename), $this->userSession->Dao->getKey().'/'.$item->getKey());
-    $url = $this->getServerURL().$this->view->webroot."/api/json?method=midas.upload.perform&mode=stream&file=1&filename=". urlencode($filename)."&uploadtoken=". $token['token']."&length=";
+    $url = $this->getServerURL().$this->view->webroot."/api/json?method=midas.upload.perform&changes=".urlencode($changes)."&revision=".$revision->getRevision()."&mode=stream&file=1&filename=". urlencode($filename)."&uploadtoken=". $token['token']."&length=";
     echo JsonComponent::encode($url);
     }
     
@@ -109,5 +135,24 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
     $metadataDao = MidasLoader::loadModel('Metadata')->getMetadata(MIDAS_METADATA_TEXT, "tmp", $type);
     if(!$metadataDao)  MidasLoader::loadModel('Metadata')->addMetadata(MIDAS_METADATA_TEXT, "tmp", $type, "");
     return MidasLoader::loadModel('Metadata')->addMetadataValue($revision, MIDAS_METADATA_TEXT, "tmp", $type, $value);  
+    }   
+    
+    
+  /**
+   * Get Metadata object
+   * @param type $type
+   * @return type
+   */
+  private function getMetaDataByQualifier($revision, $type)
+    {
+    $metadata = MidasLoader::loadModel('ItemRevision')->getMetadata($revision);
+    foreach($metadata as $m)
+      {
+      if($m->getQualifier() == $type)
+        {
+        return $m;
+        }
+      }
+    return false;
     }   
 } // end class

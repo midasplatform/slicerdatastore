@@ -129,6 +129,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
         $rating = MidasLoader::loadModel("Itemrating", 'ratings')->getAggregateInfo($item);
         $lastRevision = MidasLoader::loadModel("Item")->getLastRevision($item);
         $bitstream = end($lastRevision->getBitstreams());    
+        if(!$bitstream) continue;
            
         $items[] = array( 'title' => $item->getName(), 'rating' => $rating, 'bitstream_id' => $bitstream->getKey(),
             'type' => $item->getType(), 'id' => $item->getKey(), 'description' => $item->getDescription());

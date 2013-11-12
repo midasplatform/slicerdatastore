@@ -14,7 +14,14 @@ function callbackTimer()
           buttons: {
             Ok: function() {          
               $( this ).dialog( "close" );
-              location.reload();
+              if(json.upload.itemId == -1)
+                {
+                location.reload();
+                }
+              else
+                {
+                window.location.href = json.global.webroot+"/slicerdatastore"
+                }
             }
           }
           });
@@ -57,7 +64,7 @@ $(document).ready(function(){
       });
     $('.ui-draggable .ui-dialog-titlebar').hide();
     $("#modalDialog").html("Uploading<br/><br/><progress id='progressBar' style='width:100%' value='1' max='100'></progress><br/><span id='progressDownload'></span>");
-    $.post(json.global.webroot+'/slicerdatastore/upload/generatetoken', {name: $('#nameResource').val(), category: $('#categoryResource').val()}, function(retVal) {
+    $.post(json.global.webroot+'/slicerdatastore/upload/generatetoken', {itemId: json.upload.itemId, name: $('#nameResource').val(), changes: $('#changes').val(), category: $('#categoryResource').val()}, function(retVal) {
           var jsonRet = jQuery.parseJSON(retVal);
           timer = setTimeout("callbackTimer()",1000);          
           

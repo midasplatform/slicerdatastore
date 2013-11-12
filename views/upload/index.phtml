@@ -44,14 +44,37 @@ echo $this->doctype()
       <form id="loginForm"  style="margin-left: 18px;">
       <h1 style="font-size: 16px;color: #333;text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;margin-top: 0px;">Upload Current Dataset</h1>
       
-      <label for="name">Name</label><br/>
-      <input type="text" id="nameResource"/><br/>
-      <label for="category">Category</label><br/> <input  type="text" id="categoryResource"/>
+      <?php
+      if($this->item)
+        {
+        ?>
+        <p>Dataset: <?php echo $this->item->getName()?></p>
+        <label for="changes">Changes</label><br/>
+        <input type="text" id="changes"/><br/>
+      <?php
+        }
+      else
+        {
+        ?>
+        <label for="name">Name</label><br/>
+        <input type="text" id="nameResource"/><br/>
+        <label for="category">Category</label><br/> <input  type="text" id="categoryResource"/>
+      <?php
+        }
+        ?>
+
       <br/>
       <br/>
       <input type="submit" class="globalButton " id="submitButton" value="Start the Upload"/>
       </form>
+      <?php
+      if($this->item)
+        {
+        echo "<br/><a style='color: #56758b;text-decoration:none;' href='".$this->webroot."/slicerdatastore/view?itemId=".$this->item->getKey()."'>Back</a><br/>";
+        }
+      ?>
     </div>
+    
     <div style="display: none;" class="jsonContent">
       <?php echo $this->json ?>
     </div>

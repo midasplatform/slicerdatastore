@@ -17,7 +17,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 =========================================================================*/
-echo $this->doctype()
+function makeClickableLinks($s) {
+  return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $s);
+}
+
+echo $this->doctype();
+        
+
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -91,10 +97,23 @@ echo $this->doctype()
       <div class="info_item">
         <?php echo $this->item->getDownload() ?> downloads
       </div>
+        <div class="info_item">
+          <a style="color:#56758b;cursor:pointer;" id="datasetUrl">View dataset URL</a>
+          <div id="dialogUrl" title="Dataset: <?php echo $this->item->getName()?>" style="display:none;">
+            <p>
+              The following URL points to the current dataset's page. This URL will remain unchanged allowing you to share it.
+            </p>
+            <input style="width:400px;" type="text" value="<?php echo UtilityComponent::getServerURL().$this->webroot?>/slicerdatastore/view?itemId=<?php echo $this->item->getKey()?>" class="field left" readonly>
+          </div>
+        </div>
       <?php
       if($this->isOwner)
         {
         ?>
+        <div class="info_item">
+          <a style="color:#56758b;cursor:pointer;text-decoration: none;" href="<?php echo $this->webroot?>/slicerdatastore/upload?itemId=<?php echo $this->item->getKey()?>">
+            Upload a new revision</a>
+        </div>
         <div class="info_item">
           <a style="color:#56758b;cursor:pointer;" id="deleteDataSet">Delete the dataset</a>
         </div>
@@ -144,7 +163,7 @@ echo $this->doctype()
         echo "</td>";
         echo "<td>";
         echo "<b>".$metadata['name']."</b><br/>";
-        echo $metadata['description'];
+        echo makeClickableLinks($metadata['description']);
         echo "</div>";
         echo "</li>";
         }
