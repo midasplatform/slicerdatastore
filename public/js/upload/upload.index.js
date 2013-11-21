@@ -42,6 +42,30 @@ function callbackTimer()
   }
 
 $(document).ready(function(){
+  // Edit existing revision
+  $('#submitEditButton').click(function(){
+    if($('#nameResource').val() == "")
+      {
+      alert('Please define a name.');
+      return;
+      }
+   var backUrl = $("#backLink").attr('href');
+   $(this).after('Please wait...');
+   $('input[type=submit]').remove();
+   $('input[type=button]').remove();
+   var categories = [];
+   $('.categoryResource').each(function(){
+     if($(this).val() != "")categories.push(capitaliseFirstLetter($(this).val()));
+   });
+   $.post(json.global.webroot+'/slicerdatastore/upload/', {itemId: json.upload.itemId, name: $('#nameResource').val(), 
+     description: CKEDITOR.instances.description.getData(), 
+     categories: categories}, function(retVal) {
+         window.location.href = backUrl;
+       });  
+    return false;
+  })
+  
+  // New revision or new dataset
   $('#submitButton').click(function(){
     if($('#nameResource').val() == "")
       {
@@ -64,7 +88,14 @@ $(document).ready(function(){
       });
     $('.ui-draggable .ui-dialog-titlebar').hide();
     $("#modalDialog").html("Uploading<br/><br/><progress id='progressBar' style='width:100%' value='1' max='100'></progress><br/><span id='progressDownload'></span>");
-    $.post(json.global.webroot+'/slicerdatastore/upload/generatetoken', {itemId: json.upload.itemId, name: $('#nameResource').val(), changes: $('#changes').val(), category: $('#categoryResource').val()}, function(retVal) {
+    var categories = [];
+    $('.categoryResource').each(function(){
+      if($(this).val() != "")categories.push(capitaliseFirstLetter($(this).val()));
+    });
+    $.post(json.global.webroot+'/slicerdatastore/upload/generatetoken', {itemId: json.upload.itemId, name: $('#nameResource').val(), 
+      description: CKEDITOR.instances.description.getData(), 
+      changes:$('#changeResource').val(),
+      categories: categories}, function(retVal) {
           var jsonRet = jQuery.parseJSON(retVal);
           timer = setTimeout("callbackTimer()",1000);          
           
@@ -73,14 +104,28 @@ $(document).ready(function(){
     return false;
   });
   
+  
+  
   var availableTags = [];
   $.each( json.upload.availableTags, function(index,value)
     {
     availableTags.push(index);
     });
   
+  $('#addACategory').click(function(){
+    $( ".categoryResource:last" ).after('<input style="width:250px;"  type="text" class="categoryResource"/>');
+    $( ".categoryResource" ).autocomplete({
+      source:availableTags
+    });
+  });
   
-  $( "#categoryResource" ).autocomplete({
+  $( ".categoryResource" ).autocomplete({
     source:availableTags
   });
 });
+
+
+function capitaliseFirstLetter(string)
+  {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+  }

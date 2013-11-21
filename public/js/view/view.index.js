@@ -82,7 +82,7 @@ midas.slicerdatastore.doRegister = function () {
 midas.slicerdatastore.renderCategory = function(category) {
     var currToken = '';
     // if this extension belongs to multiple categories, we just render the first one
-    category = category.split(';')[0];
+    category = category[0];
     var categories = category.split('.');
     $.each(categories, function(k, token) {
         currToken += token;
@@ -121,6 +121,19 @@ $(document).ready(function() {
         $('#registerToComment,#registerToRate').unbind('click').click(midas.slicerdatastore.doRegister);
     });
     
+    $('#revisionLink').click(function(){
+      $('#dialogRevision').dialog({
+        width:630
+      });
+     $('input.revisionActionButton').each(function(){
+       $(this).attr('element', json.item.item_id)
+          .attr('bitstream', $(this).attr('bitstream'))
+          .attr('extensionname', json.item.name+"_"+$(this).attr('revision'));
+      midas.slicerdatastore.updateExtensionButtonState(json.item.name+"_"+$(this).attr('revision'));
+     })
+        
+    })
+    
     $('#datasetUrl').click(function(){
       $('#dialogUrl').dialog({
         width:450
@@ -153,4 +166,11 @@ $(document).ready(function() {
         window.location.href = url+"/view?itemId="+json.item.item_id+"&delete=true";
         }
     })
+    
+     $("a.generatedLink").each(function () {
+        var t = $(this).text();
+        if(t.length > 30) {
+          $(this).text(t.replace(/\./g,". ").replace(/\//g, "/ "));
+        }
+      });
 });

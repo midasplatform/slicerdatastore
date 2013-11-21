@@ -49,21 +49,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
    */
   function categories($args)
     {
-    // Get list of categories using solr
-    $metadataDao = MidasLoader::loadModel('Metadata')->getMetadata(MIDAS_METADATA_TEXT, "mrbextrator", "category");
-    $terms = array();   
-    if($metadataDao)
-      {
-      $db = Zend_Registry::get('dbAdapter');
-      $results = $db->query("SELECT value, count(value) FROM metadatavalue WHERE metadata_id='".$metadataDao->getKey()."' group by value order by value ASC")
-               ->fetchAll();
-      foreach($results as $term)
-        {
-        $key = ucfirst($term['value']);
-        $terms[$key] = (int) $term['count(value)'];
-        }      
-      }
-    return $terms;
+    return MidasLoader::loadComponent("Metadata", "slicerdatastore")->getAllCategories();
     }
 
   /**
@@ -78,14 +64,23 @@ class Slicerdatastore_ApiComponent extends AppComponent
     else $offset = 0;
     if(isset($args['limit']))$limit = $args['limit'];
     else $limit = 0;
-    if(isset($args['category']) && !empty($args['category'])) $query = "text-mrbextrator.slicerdatastore:true AND text-mrbextrator.category:".strtolower($args['category']);
-    else $query = "text-mrbextrator.slicerdatastore:true";
     
+    // zzz is used as a search prefix and suffix to improve solr metadata search
+    if(isset($args['category']) && !empty($args['category'])) 
+      {
+      $query = "text-mrbextrator.slicerdatastore:true AND text-mrbextrator.category:\"zzz".$args['category']."zzz\"";
+      }
+    else 
+      {
+      $query = "text-mrbextrator.slicerdatastore:true";
+      }
+
     if(isset($args['query']) && !empty($args['query']))
       {
       $query .= ' AND (name: '.$args['query'].
                  ' OR description: '.$args['query'].')';
       }
+
     $itemIds = array();
     $componentLoader = new MIDAS_ComponentLoader();
     $solrComponent = $componentLoader->loadComponent('Solr', 'solr');

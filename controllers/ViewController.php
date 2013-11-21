@@ -50,40 +50,17 @@ class Slicerdatastore_ViewController extends Slicerdatastore_AppController
       $this->_redirect("/slicerdatastore");
       }
         
-    $metadataRevision = false;
-    foreach($itemDao->getRevisions() as $revision)
-      {
-      if($revision->getChanges() == "Scenes' metadata") $metadataRevision = $revision;
-      }
+    $metadataRevision = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getMetadataRevision($itemDao);
     if(!$metadataRevision) throw new Zend_Exception('Unable to find metadata.');
     
-    $metadata = array();    
-    $screenshots = array();
-    foreach($metadataRevision->getBitstreams() as $bitstream)
-      {
-      $ext = strtolower(substr(strrchr($bitstream->getName(), '.'), 1));
-      if($ext == "json") $metadata = JsonComponent::decode(file_get_contents($bitstream->getFullPath()));
-      if($ext == "png") 
-        {
-        $tmp = explode(".", $bitstream->getName());
-        $tmp = $tmp[0];
-        $tmp = explode("_", $tmp);
-        $tmp = $tmp[0];        
-        $screenshots[$bitstream->getKey()] = $tmp;
-        }
-      }    
-    $midasMetadata = MidasLoader::loadModel('ItemRevision')->getMetadata(MidasLoader::loadModel("Item")->getLastRevision($itemDao));
-    $this->view->category = false;
-    $this->view->contributor = false;
-    $this->view->homepage = false;
-    
-    foreach($midasMetadata as $m)
-      {
-      if($m->getQualifier() == 'category') $this->view->category = $m->getValue();
-      if($m->getQualifier() == 'contributor') $this->view->contributor = $m->getValue();
-      if($m->getQualifier() == 'homepage') $this->view->homepage = $m->getValue();
-      }
+    list($metadata, $screenshots) = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getMRBMetadata($metadataRevision);
+   
+    $this->view->category = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getRevisionCategories(MidasLoader::loadModel('Item')->getLastRevision($itemDao));;
+    $this->view->contributor = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getMidasMetada($itemDao, "contributor");
+    $this->view->homepage = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getMidasMetada($itemDao, "homepage");
+    $this->view->description = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getMidasMetada($itemDao, 'description');
     $this->view->item = $itemDao;        
+    $this->view->lastRevision = MidasLoader::loadModel("Item")->getLastRevision($itemDao);        
     $this->view->metadata = $metadata;    
     $this->view->screenshots = $screenshots;       
     

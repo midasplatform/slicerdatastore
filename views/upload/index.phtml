@@ -9,27 +9,27 @@
   the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
   PURPOSE.  See the above copyright notices for more information.
   ========================================================================= */
-
-
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/jquery.js');
-$this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery-ui.js');
+$this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/jquery-ui.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.empty.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.callback.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.notice.js');
-$this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/upload/upload.index.js');
+$this->headScript()->appendFile($this->webroot . "/" . $this->moduleParent . '/slicerdatastore/public/js/upload/upload.index.js');
+$this->headScript()->appendFile($this->webroot . "/" . $this->moduleParent . '/slicerdatastore/public/js/ckeditor/ckeditor.js');
 echo $this->doctype()
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Login</title>
+    <title></title>
     <meta name="robots" content="index, follow, all" />
     <!-- Import CSS -->
     <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
-    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/user/user.loginform.css" />
-    <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/user/user.loginform.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/upload/upload.index.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot ?>/public/css/layout/jquery-ui.css" />
     <?php
-    echo '<link type="text/css" rel="stylesheet" href="'.$this->coreWebroot.'/public/css/layout/jquery.qtip.min.css" />';
+    echo '<link type="text/css" rel="stylesheet" href="' . $this->coreWebroot . '/public/css/layout/jquery.qtip.min.css" />';
     ?>
 
     <?php echo $this->headLink();  // import the css ?>
@@ -42,43 +42,62 @@ echo $this->doctype()
     <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/user/user.login.css" />
     <div class="loginElement">
       <form id="loginForm"  style="margin-left: 18px;">
-      <h1 style="font-size: 16px;color: #333;text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;margin-top: 0px;">Upload Current Dataset</h1>
-      
-      <?php
-      if($this->item)
-        {
-        ?>
-        <p>Dataset: <?php echo $this->item->getName()?></p>
-        <label for="changes">Changes</label><br/>
-        <input type="text" id="changes"/><br/>
-      <?php
-        }
-      else
-        {
-        ?>
-        <label for="name">Name</label><br/>
-        <input type="text" id="nameResource"/><br/>
-        <label for="category">Category</label><br/> <input  type="text" id="categoryResource"/>
-      <?php
-        }
+        <h1 style="font-size: 16px;color: #333;text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;margin-top: 0px;">
+          <?php echo (isset($_GET['edit']))? "Edit Dataset":"Upload Current Dataset"?></h1>
+
+        <div class="formElement" <?php echo (isset($_GET['revision']))? "style='display:none;'":""?>>
+          <label for="name">Name</label><br/>
+          <input style="width:100%;" type="text" id="nameResource" <?php if($this->item) echo 'value="'.$this->item->getName().'"';?>/>
+        </div>
+        <div class="formElement" <?php echo (isset($_GET['edit']) || !$this->item)? "style='display:none;'" : ""?>>
+          <label for="name">Changes</label><br/>
+          <input style="width:100%;" type="text" id="changeResource" value=''/>
+        </div>
+        <div class="formElement"  <?php echo (isset($_GET['revision']))? "style='display:none;'":""?>>
+          <label style="margin-top:10px;" for="category">Categories</label><br/>
+          <?php
+          if(empty($this->categories))
+            {
+            echo '<input style="width:250px;"  type="text" class="categoryResource"/>';
+            }
+          else
+            {
+            foreach($this->categories as $category)
+              {
+              echo '<input style="width:250px;"  type="text" class="categoryResource" value="'.$category.'"/>';
+              }
+            }
+          ?>
+        </div>
+        <a id="addACategory">Add a Category</a>
+        <div class="formElement">
+          <label for="description">Additionnal Description</label>
+          <textarea class="ckeditor" name="description" id="description" style=""><?php echo $this->description?></textarea>
+        </div>
+        <br/>
+        <?php
+        if ($this->item)
+          {
+          echo "<a  id='backLink' href='" . $this->webroot . "/slicerdatastore/view?itemId=" . $this->item->getKey() . "'>Back</a> ";
+
+          if(isset($_GET['edit']))echo '<input type="submit" class="globalButton " id="submitEditButton" value="Edit Metadata"/>';
+          else echo '<input type="submit" class="globalButton " id="submitButton" value="Upload a new revision"/>';
+          }
+        else
+          {
+          echo '<input type="submit" class="globalButton " id="submitButton" value="Start the Upload"/>';
+          }
         ?>
 
-      <br/>
-      <br/>
-      <input type="submit" class="globalButton " id="submitButton" value="Start the Upload"/>
       </form>
-      <?php
-      if($this->item)
-        {
-        echo "<br/><a style='color: #56758b;text-decoration:none;' href='".$this->webroot."/slicerdatastore/view?itemId=".$this->item->getKey()."'>Back</a><br/>";
-        }
-      ?>
+
     </div>
-    
+
     <div style="display: none;" class="jsonContent">
       <?php echo $this->json ?>
     </div>
   </body>
   <?php echo $this->headScript();
-  echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/layout/jquery.qtip.min.js"></script>';?>
+  echo '<script type="text/javascript" src="' . $this->coreWebroot . '/public/js/layout/jquery.qtip.min.js"></script>';
+  ?>
 </html>

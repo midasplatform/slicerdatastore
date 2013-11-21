@@ -1,0 +1,22 @@
+div.loginElement {
+min-height: 560px!important;
+height: auto!important;
+width: 700px!important;
+}
+
+form#loginForm{
+  margin-right:15px;
+}
+
+div.loginElement a{
+cursor: pointer;
+color: #56758b;
+text-decoration:none;
+}
+
+div.formElement{
+  margin-top: 15px;
+}
+div.formElement textarea{
+
+}

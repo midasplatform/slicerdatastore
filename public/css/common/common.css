@@ -2,7 +2,7 @@ body {
   font-family: 'Lucida Grande', 'Lucida Sans Unicode', helvetica, arial, Verdana, sans-serif;
 }
 
-input.extensionActionButton {
+input.extensionActionButton, input.revisionActionButton {
   color: white;
   font-weight: bold;
   cursor: pointer;

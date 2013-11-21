@@ -17,9 +17,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 =========================================================================*/
-function makeClickableLinks($s) {
-  return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $s);
+
+function makeClickableLinks($string){
+  /*** make sure there is an http:// on all URLs ***/
+  $string = preg_replace("/([^\w\/])(www\.[a-z0-9\-]+\.[a-z0-9\-]+)/i", "$1http://$2",$string);
+  /*** make all URLs links ***/
+  $string = preg_replace("/([\w]+:\/\/[\w-?&;#~:=\.\/\@]+[\w\/])/i","<a class='generatedLink' target=\"_blank\" href=\"$1\">$1</A>",$string);
+  /*** make all emails hot links ***/
+  $string = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i","<A HREF=\"mailto:$1\">$1</A>",$string);
+  return $string;
 }
+
 
 echo $this->doctype();
         
@@ -104,14 +112,47 @@ echo $this->doctype();
               The following URL points to the current dataset's page. This URL will remain unchanged allowing you to share it.
             </p>
             <input style="width:400px;" type="text" value="<?php echo UtilityComponent::getServerURL().$this->webroot?>/slicerdatastore/view?itemId=<?php echo $this->item->getKey()?>" class="field left" readonly>
-          </div>
+          </div>          
         </div>
+        <?php
+        if($this->lastRevision->getRevision() != 2)
+          {
+          echo '<div class="info_item">';
+          echo '<a style="color:#56758b;cursor:pointer;" id="revisionLink">View the revisions</a>';
+          echo '<div id="dialogRevision" title="Revisions" style="display:none;">';
+          echo "<table id='revisionTable'>";
+          echo "<thead><tr><th>Revision</th><th>Date</th><th style='width:300px;'>Changes</th><th></th></tr></thead>";
+          echo "<tbody>";
+          for($i = $this->lastRevision->getRevision(); $i >1 ; $i--)
+            {
+            $revision = MidasLoader::loadModel("Item")->getRevision($this->item, $i);
+            
+            $bitstream = end($revision->getBitstreams());
+            if(!$revision)continue;
+            echo "<tr>";
+            echo "<td>".($i-1)."</td>";
+            echo "<td>".date("m/d/Y", strtotime($revision->getDate()))."</td>";
+            if($i == 2) echo "<td>First revision</td>";
+            else echo "<td>".$revision->getChanges()."</td>";
+            echo '<td><div class="revisionActionButtonWrapper">  <input revision="'.$i.'" bitstream="'.$bitstream->getKey().'" type="button" class="revisionActionButton" value=""/> </div></td>';
+            echo "</tr>";
+            }
+          echo "</tbody>";
+          echo "</table>";
+          echo "</div>";
+          echo "</div>";
+          }
+          ?>
       <?php
       if($this->isOwner)
         {
         ?>
         <div class="info_item">
-          <a style="color:#56758b;cursor:pointer;text-decoration: none;" href="<?php echo $this->webroot?>/slicerdatastore/upload?itemId=<?php echo $this->item->getKey()?>">
+          <a style="color:#56758b;cursor:pointer;text-decoration: none;" href="<?php echo $this->webroot?>/slicerdatastore/upload?edit=true&itemId=<?php echo $this->item->getKey()?>">
+            Edit metadata</a>
+        </div>
+        <div class="info_item">
+          <a style="color:#56758b;cursor:pointer;text-decoration: none;" href="<?php echo $this->webroot?>/slicerdatastore/upload?revision=true&itemId=<?php echo $this->item->getKey()?>">
             Upload a new revision</a>
         </div>
         <div class="info_item">
@@ -170,6 +211,19 @@ echo $this->doctype();
       ?>
       </table>
     </div>
+    
+    <?php
+    $strippedDescription = trim(strip_tags($this->description));
+    if(!empty($strippedDescription))
+      {?>    
+      <div class="content_header">
+        Description:
+      </div>
+      <div class="screenshots"  style="width:100%;">
+        <?php echo $this->description?>
+      </div>
+    <?php
+      }?>
     
     
     <div class="content_header">
