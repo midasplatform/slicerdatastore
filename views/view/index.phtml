@@ -126,6 +126,7 @@ echo $this->doctype();
           for($i = $this->lastRevision->getRevision(); $i >1 ; $i--)
             {
             $revision = MidasLoader::loadModel("Item")->getRevision($this->item, $i);
+            if(!$revision || !$revision->saved)continue;
             
             $bitstream = end($revision->getBitstreams());
             if(!$revision)continue;
