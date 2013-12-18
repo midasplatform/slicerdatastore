@@ -186,7 +186,7 @@ class Slicerdatastore_MetadataComponent extends AppComponent
     if($metadataDao)
       {
       $db = Zend_Registry::get('dbAdapter');
-      $escaped = $db->quote("%".$name."%");
+      $escaped = $db->quote("%zzz".$name."zzz%");
       $results = $db->query("SELECT itemrevision_id FROM metadatavalue WHERE value LIKE $escaped AND metadata_id='".$metadataDao->getKey()."'")
                ->fetchAll();
       
