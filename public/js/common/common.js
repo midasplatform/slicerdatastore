@@ -29,6 +29,10 @@ midas.slicerdatastore.extensionButtonClick = function() {
     var extensionId = $(this).attr('element');
     var bitstreamId = $(this).attr('bitstream');
     var extensionName = $(this).attr('extensionname');
+    if(extensionName.indexOf(".mrb") == -1)
+      {
+      extensionName = extensionName+".mrb";
+      }
     var url = json.global.httpUrl+json.global.webroot+'/download/bitstream/'+bitstreamId+'/'+extensionId+"_"+extensionName+"?name="+extensionId+"_"+extensionName;
     var urlThumbnail = json.global.httpUrl+json.global.webroot+'/item/thumbnail?itemId='+extensionId;
     
