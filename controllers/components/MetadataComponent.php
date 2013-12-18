@@ -176,6 +176,34 @@ class Slicerdatastore_MetadataComponent extends AppComponent
     ksort($terms);
     return $terms;
     }
+    
+  /** Get items by categories */
+  function getItemsByCategory($name)
+    {
+    $metadataDao = MidasLoader::loadModel('Metadata')->getMetadata(MIDAS_METADATA_TEXT, "mrbextrator", "category");
+    $enabledDao = MidasLoader::loadModel('Metadata')->getMetadata(MIDAS_METADATA_TEXT, "mrbextrator", "slicerdatastore");
+    $items = array();   
+    if($metadataDao)
+      {
+      $db = Zend_Registry::get('dbAdapter');
+      $escaped = $db->quote("%".$name."%");
+      $results = $db->query("SELECT itemrevision_id FROM metadatavalue WHERE value LIKE $escaped AND metadata_id='".$metadataDao->getKey()."'")
+               ->fetchAll();
+      
+      foreach($results as $result)
+        {
+        $tmpResults = $db->query("SELECT value FROM metadatavalue WHERE itemrevision_id='".$result['itemrevision_id']."' AND metadata_id='".$enabledDao->getKey()."'")
+               ->fetchAll();
+        if(empty($tmpResults))continue;
+        $revision = MidasLoader::loadModel("ItemRevision")->load($result['itemrevision_id']);
+        if($revision)
+          {
+          $items[] = $revision->getItem()->getKey();
+          }
+        }      
+      }
+    return $items;
+    }
 
     /**
    * Save metadata value

@@ -60,20 +60,12 @@ class Slicerdatastore_ApiComponent extends AppComponent
    */
   function listdatasets($args)
     {
-    if(isset($args['offset']))$offset = $args['offset'];
-    else $offset = 0;
-    if(isset($args['limit']))$limit = $args['limit'];
-    else $limit = 0;
+    $offset = 0;
+    $limit = 800;
     
-    // zzz is used as a search prefix and suffix to improve solr metadata search
-    if(isset($args['category']) && !empty($args['category'])) 
-      {
-      $query = "text-mrbextrator.slicerdatastore:true AND text-mrbextrator.category:\"zzz".$args['category']."zzz\"";
-      }
-    else 
-      {
-      $query = "text-mrbextrator.slicerdatastore:true";
-      }
+    $query = "text-mrbextrator.slicerdatastore:true";
+      
+    $itemsFiler = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getItemsByCategory($args['category']);
 
     if(isset($args['query']) && !empty($args['query']))
       {
@@ -96,7 +88,6 @@ class Slicerdatastore_ApiComponent extends AppComponent
     try
       {
       $index = $solrComponent->getSolrIndex();
-
       UtilityComponent::beginIgnoreWarnings(); //underlying library can generate warnings, we need to eat them
       $response = $index->search($query, $offset, $limit + 10 , array('fl' => '*,score')); //extend limit to allow some room for policy filtering
       UtilityComponent::endIgnoreWarnings();
@@ -107,7 +98,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
         $itemIds[] = $doc->key;
         }
       }
-    catch(Exception $e)
+    catch(Apache_Solr_HttpTransportException $e)
       {
       throw new Exception('Syntax error in query', -1);
       }
@@ -118,6 +109,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
     $count = 0;
     foreach($itemIds as $itemId)
       {
+      if(!empty($itemsFiler) && !in_array($itemId, $itemsFiler)) continue;
       $item = $itemModel->load($itemId);
       if($item && $itemModel->policyCheck($item, $userDao))
         {
@@ -135,6 +127,21 @@ class Slicerdatastore_ApiComponent extends AppComponent
           }
         }
       }
+      
+    function sortByName($a, $b)
+      {
+      $a_n = strtolower($a['title']);
+      $b_n = strtolower($b['title']);
+      if($a_n == $b_n)
+        {
+        return 0;
+        }
+        
+
+      return ($a_n > $b_n ) ? 1 : -1;
+      }
+      
+    usort($items, "sortByName");
 
     return array('offset' => $offset, 'total' => $totalResults , 'items'=>$items);
     }
