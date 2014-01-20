@@ -1,10 +1,10 @@
 var midas = midas || {};
 midas.slicerdatastore = midas.slicerdatastore || {};
 midas.slicerdatastore.totalResults = -1;
+midas.slicerdatastore.sort = "name";
 
 var currentSearch = "";
-$(document).ready(function() {
-  
+$(document).ready(function() {  
      $('img.kwLogo').click(function () {
         var dlgWidth = Math.min($(window).width() * 0.9, 600);
         midas.loadDialog('KWInfo', '/slicerdatastore/index/kwinfo');
@@ -23,7 +23,14 @@ $(document).ready(function() {
         }
       currentSearch = $(this).val();
     });
-
+    
+    
+    $('li.sortLink').click(function() {
+        midas.slicerdatastore.sort = $(this).attr('sortby');
+        $('.selectedSorting').removeClass("selectedSorting");
+        $(this).addClass("selectedSorting");
+        midas.slicerdatastore.applyFilter(true);
+    });
 });
 
 
@@ -31,13 +38,13 @@ $(document).ready(function() {
  * Render the extension result in the result list area
  * @param extension Json-ified slicerpackages_extension dao
  */
-midas.slicerdatastore.renderExtension = function(extension, index) {
-  
+midas.slicerdatastore.renderExtension = function(extension, index) {  
     var url = json.global.webroot+'/slicerdatastore/view?itemId='+extension.id+'&layout='+json.layout;
     var extDiv = $('#extensionTemplate').clone()
       .attr('id', 'extensionWrapper_'+extension.id);
     extDiv.attr('element', extension.id)
     extDiv.attr('bitstream', extension.bitstream_id)
+    extDiv.attr('data-id', extension.bitstream_id)
     .attr('extensionname', extension.title);
     extDiv.find('a.extensionName').html(extension.title)
       .attr('qtip', extension.title)
@@ -69,8 +76,7 @@ midas.slicerdatastore.renderExtension = function(extension, index) {
     extDiv.find('span.totalVotes').html('('+extension.rating.total+')');
     extDiv.appendTo('#extensionsContainer');
     midas.slicerdatastore.updateExtensionButtonState(extension.title);
-
-    extDiv.fadeIn(200 * index);
+    extDiv.fadeIn(100 * index);
 }
 
 /**
@@ -88,7 +94,7 @@ midas.slicerdatastore.resetFilter = function(){
 midas.slicerdatastore.fetchDatasets = function(){
   var url = json.global.webroot+'/api/json?method=midas.slicerdatastore.listdatasets';
 
-  $.post(url, {category: midas.slicerdatastore.category, query: $('#searchInput').val()}, function(retVal){
+  $.post(url, {category: midas.slicerdatastore.category, query: $('#searchInput').val(), sortby: midas.slicerdatastore.sort}, function(retVal){
     if(retVal.data.offset == 0)
         {
         midas.slicerdatastore.resetFilter();
@@ -190,7 +196,7 @@ midas.slicerdatastore.fetchCategories = function () {
           midas.slicerdatastore.selectedCategory = $(selector).addClass('selectedCategory');
         },
         error: function (retVal) {
-            alert(retVal.message);
+           
         }
     });
     

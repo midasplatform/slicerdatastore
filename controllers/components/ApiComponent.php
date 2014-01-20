@@ -162,7 +162,7 @@ class Slicerdatastore_ApiComponent extends AppComponent
         $bitstream = end($lastRevision->getBitstreams());    
         if(!$bitstream) continue;
            
-        $items[] = array( 'title' => $item->getName(), 'rating' => $rating, 'bitstream_id' => $bitstream->getKey(),
+        $items[] = array( 'downloads' => $item->getDownload(), 'date' => strtotime($item->getDateUpdate()), 'title' => $item->getName(), 'rating' => $rating, 'bitstream_id' => $bitstream->getKey(),
             'type' => $item->getType(), 'id' => $item->getKey(), 'description' => $item->getDescription());
         $count++;
         if($count >= $limit)
@@ -179,13 +179,34 @@ class Slicerdatastore_ApiComponent extends AppComponent
       if($a_n == $b_n)
         {
         return 0;
-        }
-        
-
+        }       
       return ($a_n > $b_n ) ? 1 : -1;
       }
       
-    usort($items, "sortByName");
+    function sortByDate($a, $b)
+      {
+      $a_n = strtolower($a['date']);
+      $b_n = strtolower($b['date']);
+      if($a_n == $b_n)
+        {
+        return 0;
+        }       
+      return ($a_n < $b_n ) ? 1 : -1;
+      }
+    function sortByDownload($a, $b)
+      {
+      $a_n = strtolower($a['downloads']);
+      $b_n = strtolower($b['downloads']);
+      if($a_n == $b_n)
+        {
+        return 0;
+        }       
+      return ($a_n < $b_n ) ? 1 : -1;
+      }
+      
+    if($args['sortby'] == "name")usort($items, "sortByName");
+    if($args['sortby'] == "date")usort($items, "sortByDate");
+    if($args['sortby'] == "download")usort($items, "sortByDownload");
 
     return array('offset' => $offset, 'total' => $totalResults , 'items'=>$items);
     }

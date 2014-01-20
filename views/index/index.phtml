@@ -64,6 +64,14 @@ echo $this->doctype()
               <li id="categoryAll">All</li>
             </ul>
           </div>
+            <div class="sortList">
+            <div class="categoriesHeader">Sort by</div>
+            <ul id="sortList" class="sortList">
+              <li class="sortLink selectedSorting" sortby="name" >Name</li>
+              <li class="sortLink" sortby="date" >Upload date</li>              
+              <li class="sortLink" sortby="download" >Number of download</li>              
+            </ul>
+          </div>
         </div>
         <div class="extensionsBodyRightColumn">
           <div class="extensionList">
@@ -79,6 +87,7 @@ echo $this->doctype()
       </div>
     </div>
 
+  
     <!-- TEMPLATE: extension -->
     <div class="extensionWrapper" style="display: none;" id="extensionTemplate">
       <div class="extensionIconWrapper">
@@ -122,7 +131,6 @@ echo $this->doctype()
   $this->headScript()->appendFile($this->webroot.'/modules/ratings/public/js/star_rating/jquery.ui.stars.min.js');
   $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js?v='.VERSION_CACHE);
   $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/index/index.index.js?v='.VERSION_CACHE);
-  $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/scrollpagination/jquery.scrollpagination.js');
   $this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/visibility/jquery-visibility.js');
 
     
