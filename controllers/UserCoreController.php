@@ -20,6 +20,34 @@
 
 class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
 {   
+  function loginAction()
+    {
+    if($this->_request->isPost())
+      {
+      ob_start(); 
+      $this->callCoreAction();
+      $out1 = JsonComponent::decode(ob_get_contents());
+      ob_clean(); 
+      if($out1['status'] == "1")
+        {
+        $instanceSalt = Zend_Registry::get('configGlobal')->password->prefix;
+        $userDao = MidasLoader::loadModel("User")->load($this->userSession->Dao->getKey());
+        if($userDao)
+          {
+          $passwordHash = hash($userDao->getHashAlg(), $instanceSalt.$userDao->getSalt().$_POST['password']);
+          $out1['localStore'] = $userDao->getKey().'-'.$passwordHash;
+          }
+        }
+      $this->disableLayout();
+      $this->disableView();
+      echo JsonComponent::encode($out1); 
+      }
+    else
+      {
+      $this->callCoreAction();
+      }
+    }
+  
   function registerAction()
     {
     if(strpos($_SERVER['HTTP_REFERER'], "slicerdatastore") === false)
@@ -32,6 +60,8 @@ class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
       throw new Zend_Exception('New user registration is disabled.');
       }
 
+    if(!isset($_GET['previousUri'])) $_GET['previousUri'] = '/slicerdatastore/upload';
+      
     Zend_Loader::loadClass("UserForm", BASE_PATH . '/core/controllers/forms');
     $userForm = new UserForm();
     $form = $userForm->createRegisterForm();
@@ -51,7 +81,7 @@ class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
         $this->userSession->Dao = MidasLoader::loadModel("User")->createUser(trim($form->getValue('email')), $form->getValue('password1'), trim($form->getValue('firstname')), trim($form->getValue('lastname')));
         session_write_close();
 
-        $this->_redirect('/slicerdatastore/upload');
+        $this->_redirect(str_replace($this->view->webroot, "", $_GET['previousUri']));
         }
       else
         {

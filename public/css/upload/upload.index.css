@@ -20,3 +20,49 @@ div.formElement{
 div.formElement textarea{
 
 }
+
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 6px;
+    left:-2px;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+    
+    color:black!important;
+    height: 20px;
+    font: normal 13px/100% Verdana, Tahoma, sans-serif!important;
+    border: solid 1px #b7b7b7!important;
+    outline: 0;
+    background: #FFFFFF left top repeat-x!important;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF))!important;
+    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px)!important;
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+        -moz-border-radius: 0px!important;
+    -webkit-border-radius: 0px!important;
+    border-radius: 0px!important;
+
+  }
+  .custom-combobox-input {
+    color:black!important;
+    height: 18px;
+    font: normal 13px/100% Verdana, Tahoma, sans-serif!important;
+    border: solid 1px #b7b7b7!important;
+    outline: 0;
+    background: #FFFFFF left top repeat-x!important;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF))!important;
+    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px)!important;
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    
+    -moz-border-radius: 0px!important;
+    -webkit-border-radius: 0px!important;
+    border-radius: 0px!important;
+  }

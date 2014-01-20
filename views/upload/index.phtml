@@ -14,6 +14,7 @@ $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/jquery-u
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.empty.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.callback.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.notice.js');
+$this->headScript()->appendFile($this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/common/common.js?v='.VERSION_CACHE);
 $this->headScript()->appendFile($this->webroot . "/" . $this->moduleParent . '/slicerdatastore/public/js/upload/upload.index.js');
 $this->headScript()->appendFile($this->webroot . "/" . $this->moduleParent . '/slicerdatastore/public/js/ckeditor/ckeditor.js');
 echo $this->doctype()
@@ -27,6 +28,8 @@ echo $this->doctype()
     <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
     <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/user/user.loginform.css" />
     <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/upload/upload.index.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/index/index.index.css?v=<?php echo VERSION_CACHE?>" />
+
     <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot ?>/public/css/layout/jquery-ui.css" />
     <?php
     echo '<link type="text/css" rel="stylesheet" href="' . $this->coreWebroot . '/public/css/layout/jquery.qtip.min.css" />';
@@ -42,6 +45,11 @@ echo $this->doctype()
     <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/user/user.login.css" />
     <div class="loginElement">
       <form id="loginForm"  style="margin-left: 18px;">
+        <div style="float:right;">
+          <?php if($this->logged) { ?>
+            <div class="logoutDiv"><a href="javascript:;" id="logoutLink">Logout</a></div>
+          <?php } ?>
+        </div>
         <h1 style="font-size: 16px;color: #333;text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;margin-top: 0px;">
           <?php echo (isset($_GET['edit']))? "Edit Dataset":"Upload Current Dataset"?></h1>
 
@@ -71,7 +79,7 @@ echo $this->doctype()
         </div>
         <a id="addACategory">Add a Category</a>
         <div class="formElement">
-          <label for="description">Additionnal Description</label>
+          <label for="description">Additional Description</label>
           <textarea class="ckeditor" name="description" id="description" style=""><?php echo $this->description?></textarea>
         </div>
         <br/>
@@ -92,10 +100,37 @@ echo $this->doctype()
       </form>
 
     </div>
+    <?php
+    if(!empty($this->ownedItems))
+      {
+      ?>
+      <br/>
+      <div class="loginElement" style="min-height: 1px!important">
+        <h1 style="font-size: 16px;color: #333;text-shadow: rgba(0, 0, 0, 0.46) 1px 1px 1px;margin-top: 0px;">
+          Upload a new revision of an existing dataset:</h1>
+        <div id="listDatasets"></div>
+        <div style="clear:both;"><div>
+      </div>
+    <?php
+      }
+      ?>
 
     <div style="display: none;" class="jsonContent">
       <?php echo $this->json ?>
     </div>
+       <!-- TEMPLATE: extension -->
+    <div class="extensionWrapper" style="display: none;" id="extensionTemplate">
+      <div class="extensionIconWrapper">
+        <img  alt="" src="" class="extensionIcon" />
+      </div>
+      <div class="extensionNameWrapper">
+        <span class="extensionName"></span>
+      </div>
+      <div class="subtitleWrapper">
+        <span class="subtitle"></span>
+      </div>       
+    </div>            
+
   </body>
   <?php echo $this->headScript();
   echo '<script type="text/javascript" src="' . $this->coreWebroot . '/public/js/layout/jquery.qtip.min.js"></script>';

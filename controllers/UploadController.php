@@ -42,6 +42,7 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
       
     $itemDao = MidasLoader::loadModel("Item")->load($itemId);
     $this->view->item = false;
+    $this->view->ownedItems = array();
     $this->view->description = "";
     $this->view->categories = array();
     if(isset($itemId) && $itemDao && MidasLoader::loadModel("Item")->policyCheck($itemDao, $this->userSession->Dao, MIDAS_POLICY_ADMIN))
@@ -67,8 +68,27 @@ class Slicerdatastore_UploadController extends Slicerdatastore_AppController
         return;
         }
       }
-      
+    else
+      {      
+      $folderId = MidasLoader::loadModel("Setting")->getValueByName('rootFolder', "slicerdatastore");
+      $folder = MidasLoader::loadModel("Folder")->load($folderId);
+      $this->view->ownedItems = MidasLoader::loadModel('Item')->getOwnedByUser($this->userSession->Dao, 99999);
+      $i = 0;
+      foreach($this->view->ownedItems as $key => $item)
+        {
+        $itemFolder = reset($item->getFolders());
+        if($i > 10 || $itemFolder->getKey() != $folder->getKey())
+          {
+          unset($this->view->ownedItems[$key]);        
+          }
+        else
+          {
+          $i++;
+          }        
+        }
+      }      
      
+    $this->view->json['owned'] = $this->view->ownedItems;
     $this->view->json['upload'] = array();
     $this->view->json['upload']['itemId'] = (isset($itemId))? $itemId:-1;
     $this->view->json['upload']['availableTags'] = MidasLoader::loadComponent('Api', 'slicerdatastore')->categories(array());

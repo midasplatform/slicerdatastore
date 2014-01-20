@@ -153,12 +153,6 @@ $(document).ready(function() {
     var url = json.global.webroot+'/slicerdatastore';
 
     $('#rootBreadcrumb').attr('href', url);
-    // Enable logout link
-    $('#logoutLink').click(function () {
-        $.post(json.global.webroot+'/user/logout', {noRedirect: true}, function() {
-            window.location.reload();
-        });
-    });
     
     $('#deleteDataSet').click(function(){
       if(confirm("Do you really want to delete the dataset?"))
@@ -173,4 +167,14 @@ $(document).ready(function() {
           $(this).text(t.replace(/\./g,". ").replace(/\//g, "/ "));
         }
       });
+      
+      
+    midas.registerCallback('CALLBACK_RATINGS_AFTER_LOAD', 'ratings', function() {
+        $('#loginToComment,#loginToRate').unbind('click').click(function(){
+          window.location.href = json.global.webroot+"/slicerdatastore/user/login?previousUri="+json.global.currentUri;
+        });
+        $('#registerToComment,#registerToRate').unbind('click').click(function(){
+          window.location.href = json.global.webroot+"/slicerdatastore/user/login?register=true&previousUri="+json.global.currentUri;
+        });
+    });
 });

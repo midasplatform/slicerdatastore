@@ -16,7 +16,7 @@ function loginForm()
   $('div.loginElement').append('<div id="registerShare"><img id="loadingImg" style="display:none;" alt="" src="'+json.global.webroot+'/core/public/images/icons/loading.gif"  /></div>')
   $('#loadingImg').show();
       $.ajax({
-          url: json.global.webroot+"/slicerdatastore/user/loginform",
+          url: json.global.webroot+"/slicerdatastore/user/loginform?previousUri="+json.previousUri,
           contentType: "application/x-www-form-urlencoded;charset=UTF-8",
           success: function(data) {
             $('form#loginForm').remove();
@@ -37,7 +37,7 @@ function registerForm()
   $('div.loginElement').append('<div id="registerShare"><img id="loadingImg" style="display:none;" alt="" src="'+json.global.webroot+'/core/public/images/icons/loading.gif"  /></div>')
   $('#loadingImg').show();
       $.ajax({
-          url: json.global.webroot+"/user/register",
+          url: json.global.webroot+"/user/register?previousUri="+json.previousUri,
           contentType: "application/x-www-form-urlencoded;charset=UTF-8",
           success: function(data) {
               $('div#registerShare').html(data).find('form#registerForm').css('color', 'black').css('margin-left','18px');

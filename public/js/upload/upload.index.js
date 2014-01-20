@@ -113,19 +113,140 @@ $(document).ready(function(){
     });
   
   $('#addACategory').click(function(){
-    $( ".categoryResource:last" ).after('<input style="width:250px;"  type="text" class="categoryResource"/>');
-    $( ".categoryResource" ).autocomplete({
-      source:availableTags
-    });
+    $( ".categoryResource:last" ).parent().append('<input style="width:250px;"  type="text" class="categoryResource"/>');
+    initAutocomplete(availableTags);
   });
   
-  $( ".categoryResource" ).autocomplete({
-    source:availableTags
+  initAutocomplete(availableTags);
+  
+  $.each(json.owned, function(index, extension) {
+     renderExtension(extension, index);
   });
 });
 
+var globalTags = [];
+function initAutocomplete(tags)
+  {
+    globalTags = tags;
+    $(".categoryResource").combobox();
+  
+  /*$( ".categoryResource" ).autocomplete({
+    source:tags
+  });*/
+  }
 
 function capitaliseFirstLetter(string)
   {
   return string.charAt(0).toUpperCase() + string.slice(1);
   }
+  
+  
+
+function renderExtension (extension, index) {
+    var extDiv = $('#extensionTemplate').clone()
+      .attr('id', 'extensionWrapper_'+extension.item_id);
+    extDiv.attr('element', extension.item_id)
+    .attr('extensionname', extension.name);
+    extDiv.find('span.extensionName').html(extension.name)
+      .attr('qtip', extension.name)
+      .attr('element', extension.item_id)
+     /* .click(midas.slicerdatastore.extensionClick)*/;
+    extDiv.find('img.extensionIcon').attr('src', json.global.webroot+'/item/thumbnail?itemId='+extension.item_id)
+      .attr('element', extension.item_id)
+      .attr('extensionname', extension.name)
+    /*  .click(midas.slicerdatastore.extensionClick)*/;
+    extDiv.find('input.extensionActionButton')
+      .attr('element', extension.item_id)
+      .attr('extensionname', extension.name);
+
+    extDiv.appendTo('#listDatasets');
+    extDiv.show();
+    extDiv.click(function(){
+      window.location.href = json.global.webroot+"/slicerdatastore/upload?revision=true&itemId="+extension.item_id;
+    })
+}
+
+
+  (function( $ ) {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox" )
+          .insertAfter( this.element );
+ 
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+ 
+      _createAutocomplete: function() {
+        var value = this.element.val();
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: globalTags
+          })
+          .tooltip({
+            tooltipClass: "ui-state-highlight"
+          });
+ 
+        this._on( this.input, {
+          keyup: function()
+            {
+            this.element.val(this.input.val());
+            },
+          autocompleteselect: function( event, ui ) {
+            this._trigger( "select", event, {
+              item: ui.item.option
+            });
+            this.element.val(ui.item.value);
+          }
+ 
+        });
+      },
+ 
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+ 
+        $( "<a>" )
+          .attr( "tabIndex", -1 )
+          .attr( "title", "Show All Items" )
+          .tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .mousedown(function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .click(function() {
+            input.focus();
+ 
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+ 
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+
+ 
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+  })( jQuery );

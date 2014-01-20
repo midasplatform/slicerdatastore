@@ -25,6 +25,7 @@ function callbackTimer()
     timer = setTimeout("callbackTimer()",500);
     }
   }
+  
 midas.slicerdatastore.extensionButtonClick = function() {
     var extensionId = $(this).attr('element');
     var bitstreamId = $(this).attr('bitstream');
@@ -114,4 +115,47 @@ midas.slicerdatastore.setExtensionButtonState = function(extensionName, buttonSt
 
 midas.slicerdatastore.isPageHidden = function(){
   return document.hidden || document.msHidden || document.webkitHidden;
+}
+
+/** manage automatic authentication*/
+$(document).ready(function(){
+  midas.slicerdatastore.authenticate();
+    // Enable logout link
+  $('#logoutLink').click(function () {
+    
+      window.localStorage.removeItem("DataStoreID");
+      $.post(json.global.webroot+'/user/logout', {noRedirect: true}, function() {
+          window.location.reload();
+      });
+  });
+})
+
+midas.slicerdatastore.authenticate = function(){
+  if(json.global.logged == "" && window.localStorage && window.localStorage.getItem('DataStoreID') != null)
+    {
+    var html = "<div class='modal'>";
+    html += "<div id='modelCenter'>";
+    html += "<img  src='"+json.global.webroot+"/core/public/images/icons/loading.gif' /> Authenticating... please wait";
+    html += "</div>";
+    html += "</div>";
+
+    var winWidth = $(window).width();
+    var winHeight = $(window).height();  
+    $('body').append(html);
+    $('body').addClass("loading"); 
+    $('#modelCenter').css("position","absolute").css("left", ((winWidth / 2) - ($('#modelCenter').width() / 2)) + "px").css("top", ((winHeight / 2) - ($('#modelCenter').height() / 2)) + "px");
+    
+    $.post(json.global.webroot+'/api/json?method=midas.slicerdatastore.authenticate', {data: window.localStorage.getItem('DataStoreID')}, function(ret){
+      if(ret.data == 1)
+        {
+        if(json.global.currentUri.indexOf("user/login") != -1) window.location.href = json.global.webroot+"/slicerdatastore/upload";
+        else window.location.reload();
+        }
+      else
+        {
+        $('body').removeClass("loading"); 
+        window.localStorage.removeItem("DataStoreID");
+        }
+    }, "json");    
+    }
 }

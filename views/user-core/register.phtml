@@ -15,7 +15,8 @@ PURPOSE.  See the above copyright notices for more information.
 
 <div class="registerContent">  
   <div class="register">
-    <form id="registerForm" style="margin-left:191px;padding-top: 0px;" class="genericForm" method="<?php echo $this->form['method']?>"  action="<?php echo $this->form['action']?>">
+    <form id="registerForm" style="margin-left:191px;padding-top: 0px;" class="genericForm" method="<?php echo $this->form['method']?>"
+          action="<?php echo $this->form['action'];?>?previousUri=<?php echo $_GET['previousUri']?>">
      <h1 class="subTitle">Register:</h1>
       <div class="registerError">
        <span></span><br/>

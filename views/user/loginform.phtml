@@ -10,12 +10,12 @@ the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 PURPOSE.  See the above copyright notices for more information.
 =========================================================================*/
 echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/jquery/jquery.form.js"></script>';
-echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/user/user.login.js"></script>';
+echo '<script type="text/javascript" src="'.$this->webroot."/".$this->moduleParent.'/slicerdatastore/public/js/user/user.loginform.js"></script>';
 ?>
 <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/user/user.loginform.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<form id="loginForm" method="<?php echo $this->form['method']?>"  action="<?php echo $this->webroot?>/user/login?previousuri=<?php echo urlencode($this->webroot."/slicerdatastore/upload")?>">
+<form id="loginForm" method="<?php echo $this->form['method']?>"  action="<?php echo $this->webroot?>/user/login?previousuri=<?php echo urlencode($this->previousUri)?>">
   <div style="float:right;">
     <br/>
     <br/>
@@ -31,6 +31,10 @@ echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/user/
       <?php echo $this->form['password']?><br/>
     <input type="hidden" name="previousuri" value=""/>
     
+    <div id="rememberMeWrapper">
+    
+        <label style="color:black;" id="rememberMeText" for="remerberMe"><?php echo $this->t("Remember Me")?></label> <?php echo $this->form['remerberMe']?>
+    </div>
 
    
      <img style="display: none;" alt="" src="<?php echo $this->coreWebroot;?>/public/images/icons/loading.gif" id="loginWaiting" />

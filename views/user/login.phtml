@@ -18,6 +18,7 @@ $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.ca
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.dialog.js');
 $this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.notice.js');
 $this->headScript()->appendFile($this->webroot . '/'.$this->moduleParent.'/slicerdatastore/public/js/user/user.login.js');
+$this->headScript()->appendFile($this->webroot . '/'.$this->moduleParent.'/slicerdatastore/public/js/common/common.js');
 echo $this->doctype()
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,6 +29,7 @@ echo $this->doctype()
     <!-- Import CSS -->
     <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
     <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/common/common.css?v=<?php echo VERSION_CACHE?>" />
     <?php
     echo '<link type="text/css" rel="stylesheet" href="'.$this->coreWebroot.'/public/css/layout/jquery.qtip.min.css" />';
     ?>

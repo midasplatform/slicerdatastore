@@ -51,6 +51,50 @@ class Slicerdatastore_ApiComponent extends AppComponent
     {
     return MidasLoader::loadComponent("Metadata", "slicerdatastore")->getAllCategories();
     }
+    
+  /**
+   * Automatically authenticate an user using local storage data
+   * @param sting Data
+   * @return boolean
+   */ 
+  function authenticate($args)
+    {
+    $data = $args['data'];
+    if(!empty($data))
+      {
+      $tmp = explode('-', $data);
+      if(count($tmp) == 2)
+        {
+        $userDao = MidasLoader::loadModel("User")->load($tmp[0]);
+        if($userDao != false)
+          {
+          // authenticate valid users in the appropriate method for the
+          // current application version
+          if(version_compare(Zend_Registry::get('configDatabase')->version, '3.2.12', '>='))
+            {
+            $auth = MidasLoader::loadModel("User")->hashExists($tmp[1]);
+            }
+          else
+            {
+            $auth = MidasLoader::loadModel("User")->legacyAuthenticate($userDao, '', '', $tmp[1]);
+            }
+          // if authenticated, set the session user to be this user
+          if($auth)
+            {
+            session_start();
+            Zend_Session::start();
+            $user = new Zend_Session_Namespace('Auth_User');
+            $user->setExpirationSeconds(60 * Zend_Registry::get('configGlobal')->session->lifetime);
+            $user->Dao = $userDao;
+            session_write_close();
+            return true;
+            }
+          }
+        }
+      }
+    return false;
+    }
+   
 
   /**
    * Call with ajax and filter parameters to get a list of datasets
