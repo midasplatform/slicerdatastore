@@ -4,79 +4,6 @@ midas.slicerdatastore = midas.slicerdatastore || {};
 var json = null;
 
 /**
- * Displays the login dialog
- */
-midas.slicerdatastore.doLogin = function () {
-    var content = $('#loginFormTemplate').clone();
-    content.find('form.loginForm').attr('id', 'appstoreLoginForm');
-    content.find('div.loginError').attr('id', 'appstoreLoginError');
-    midas.showDialogWithContent('Login', content.html(), false, { width: 320 });
-    $('a.registerLink').click(midas.slicerdatastore.doRegister);
-    $('#appstoreLoginForm').ajaxForm({
-        success: function (responseText, statusText, xhr, form) {
-            var resp = $.parseJSON(responseText);
-            if(resp.status == 'ok') {
-                window.location.reload();
-            } else {
-                $('#appstoreLoginError').html('Login failed');
-            }
-        }
-    });
-}
-
-/**
- * Displays the register dialog
- */
-midas.slicerdatastore.doRegister = function () {
-    var content = $('#registerFormTemplate').clone();
-    content.find('form.registerForm').attr('id', 'registerForm');
-    content.find('div.registerError').attr('id', 'registerError');
-    midas.showDialogWithContent('Register', content.html(), false, { width: 380 });
-    $('a.loginLink').click(midas.slicerdatastore.doLogin);
-    $('#registerForm').ajaxForm({
-        success: function (responseText, statusText, xhr, form) {
-            var resp = $.parseJSON(responseText);
-            if(resp.status == 'ok') {
-                window.location.reload();
-            } else {
-                var errorText = '<ul>';
-                if(resp.alreadyRegistered) {
-                    $('#registerForm').find('input[type=text],input[type=password]')
-                    .removeClass('invalidField').addClass('validField');
-                    $('#registerForm').find('input[name=email]').removeClass('validField').addClass('invalidField');
-                    errorText += '<li>'+resp.message+'</li>';
-                } else {
-                    $('#registerForm').find('input[type=text],input[type=password]')
-                    .removeClass('validField').addClass('invalidField');
-
-                    $.each(resp.validValues, function(field, value) {
-                        $('#registerForm').find('input[name='+field+']')
-                        .removeClass('invalidField').addClass('validField');
-                    });
-                    if(!resp.validValues.email) {
-                        errorText += '<li>Invalid email</li>';
-                    }
-                    if(!resp.validValues.firstname) {
-                        errorText += '<li>Invalid first name</li>';
-                    }
-                    if(!resp.validValues.lastname) {
-                        errorText += '<li>Invalid last name</li>';
-                    }
-                    if(!resp.validValues.password1) {
-                        errorText += '<li>Invalid password</li>';
-                    }
-                    if(!resp.validValues.password2) {
-                        errorText += '<li>Passwords must match</li>';
-                    }
-                }
-                errorText += '</ul>';
-                $('#registerError').html(errorText);
-            }
-        }
-    });
-}
-
-/**
  * Renders the category of this extension as a breadcrumb bar
  */
 midas.slicerdatastore.renderCategory = function(category) {
@@ -116,10 +43,6 @@ $(document).ready(function() {
         .attr('extensionname', json.item.name);
     midas.slicerdatastore.updateExtensionButtonState(json.item.name);
 
-    midas.registerCallback('CALLBACK_RATINGS_AFTER_LOAD', 'ratings', function() {
-        $('#loginToComment,#loginToRate').unbind('click').click(midas.slicerdatastore.doLogin);
-        $('#registerToComment,#registerToRate').unbind('click').click(midas.slicerdatastore.doRegister);
-    });
     
     $('#revisionLink').click(function(){
       $('#dialogRevision').dialog({
