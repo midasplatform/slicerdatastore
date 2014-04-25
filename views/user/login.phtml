@@ -1,0 +1,63 @@
+<?php
+/* =========================================================================
+  MIDAS Server
+  Copyright (c) Kitware SAS. 20 rue de la Villette. All rights reserved.
+  69328 Lyon, FRANCE.
+
+  See Copyright.txt for details.
+  This software is distributed WITHOUT ANY WARRANTY; without even
+  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+  PURPOSE.  See the above copyright notices for more information.
+  ========================================================================= */
+
+
+$this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/jquery.js');
+$this->headScript()->appendFile($this->coreWebroot.'/public/js/layout/jquery-ui.js');
+$this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.empty.js');
+$this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.callback.js');
+$this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.dialog.js');
+$this->headScript()->appendFile($this->coreWebroot . '/public/js/layout/midas.notice.js');
+$this->headScript()->appendFile($this->webroot . '/'.$this->moduleParent.'/slicerdatastore/public/js/user/user.login.js');
+$this->headScript()->appendFile($this->webroot . '/'.$this->moduleParent.'/slicerdatastore/public/js/common/common.js');
+echo $this->doctype()
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Login</title>
+    <meta name="robots" content="index, follow, all" />
+    <!-- Import CSS -->
+    <link rel="shortcut icon" href="<?php echo $this->coreWebroot ?>/public/images/icons/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->coreWebroot?>/public/css/layout/jquery-ui.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot."/".$this->moduleParent?>/slicerdatastore/public/css/common/common.css?v=<?php echo VERSION_CACHE?>" />
+    <?php
+    echo '<link type="text/css" rel="stylesheet" href="'.$this->coreWebroot.'/public/css/layout/jquery.qtip.min.css" />';
+    ?>
+
+    <?php echo $this->headLink();  // import the css ?>
+    <?php echo $this->headStyle(); // import the css ?>
+
+  </head>
+  <body>
+    <div class="MainDialog" style="display:none;">
+      <div class="MainDialogContent">
+      </div>
+      <div class="MainDialogLoading">
+        <img alt="" src="/Midas/Midas3/core/public/images/icons/loading.gif" />
+      </div>
+      <input type="hidden" class="DialogContentPage"/>
+    </div>
+    <div style="display:none;" class="Wrapper"></div>
+    <link type="text/css" rel="stylesheet" href="<?php echo $this->webroot . "/" . $this->moduleParent ?>/slicerdatastore/public/css/user/user.login.css" />
+    <div class="loginElement">
+
+
+
+    </div>
+    <div style="display: none;" class="jsonContent">
+      <?php echo $this->json ?>
+    </div>
+  </body>
+  <?php echo $this->headScript();
+  echo '<script type="text/javascript" src="'.$this->coreWebroot.'/public/js/layout/jquery.qtip.min.js"></script>';?>
+</html>
