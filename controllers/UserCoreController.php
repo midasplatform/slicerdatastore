@@ -20,18 +20,23 @@
 
 class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
 {   
-  function loginAction()
+  function datastoreloginAction()
     {
+    ob_start(); 
+    include_once BASE_PATH.'/core/controllers/UserController.php';
+    $controller = new UserController($this->getRequest(), $this->getResponse());
+    $controller->userSession = $this->userSession;
+    $controller->logged = $this->logged;
+    $controller->loginAction();
     if($this->_request->isPost())
-      {
-      ob_start(); 
+      {      
       $this->callCoreAction();
       $out1 = JsonComponent::decode(ob_get_contents());
       ob_clean(); 
       if($out1['status'] == "1")
         {
         $instanceSalt = Zend_Registry::get('configGlobal')->password->prefix;
-        $userDao = MidasLoader::loadModel("User")->load($this->userSession->Dao->getKey());
+        $userDao = MidasLoader::loadModel("User")->getByEmail($_POST['email']);
         if($userDao)
           {
           $passwordHash = hash($userDao->getHashAlg(), $instanceSalt.$userDao->getSalt().$_POST['password']);
@@ -41,10 +46,6 @@ class Slicerdatastore_UserCoreController extends Slicerdatastore_AppController
       $this->disableLayout();
       $this->disableView();
       echo JsonComponent::encode($out1); 
-      }
-    else
-      {
-      $this->callCoreAction();
       }
     }
   

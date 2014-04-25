@@ -108,6 +108,13 @@ class Slicerdatastore_ApiComponent extends AppComponent
     $limit = 800;
     
     $query = "text-mrbextrator.slicerdatastore:true";
+    
+    $category = "";
+    
+    if(isset($args['category']))
+      {
+      $category = $args['category'];
+      }
       
     $itemsFiler = MidasLoader::loadComponent("Metadata", "slicerdatastore")->getItemsByCategory($args['category']);
 
