@@ -162,8 +162,14 @@ midas.slicerdatastore.authenticate = function(){
     $.post(json.global.webroot+'/api/json?method=midas.slicerdatastore.authenticate', {data: window.localStorage.getItem('DataStoreID')}, function(ret){
       if(ret.data == 1)
         {
-        if(json.global.currentUri.indexOf("user/datastorelogin") != -1) window.location.href = json.global.webroot+"/slicerdatastore/upload";
-        else window.location.reload();
+        if(json.global.currentUri.indexOf("user/datastorelogin") != -1 || json.global.currentUri.indexOf("user/login") != -1)
+          {
+          window.location.href = json.global.webroot+"/slicerdatastore/upload";
+          }
+        else
+          {
+          window.location.reload();
+          }
         }
       else
         {
