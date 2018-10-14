@@ -5,9 +5,8 @@ midas.slicerdatastore = midas.slicerdatastore || {};
  * Called when a user clicks the extension button (download, install or uninstall)
  */
 var timer = false;
-function callbackTimer()
-  {
-  var stats = window.DataStoreGUI.getStreamStat();
+
+function updateStreamStats(stats){
   if(stats == "-1")
     {
     $( "#modalDialog" ).dialog( "close" );
@@ -24,7 +23,22 @@ function callbackTimer()
 
     timer = setTimeout("callbackTimer()",500);
     }
+}
+
+function callbackTimer(){
+  /* Following will be true when WebEngine is present for Qt5.x  */
+  if(typeof qt!='undefined')
+  {
+    window.DataStoreGUI.getStreamStat(function(stats){
+      updateStreamStats(stats);
+    });
   }
+  else
+  {
+    var stats = window.DataStoreGUI.getStreamStat();
+    updateStreamStats(stats);
+  }
+}
   
 midas.slicerdatastore.extensionButtonClick = function() {
     var extensionId = $(this).attr('element');

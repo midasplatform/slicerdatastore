@@ -1,7 +1,6 @@
 var timer = false;
-function callbackTimer()
-  {
-  var stats = window.DataStoreGUI.getStreamStat();
+
+function updateStreamStats(stats){
   if(stats == "-1")
     {
     $( "#modalDialog" ).dialog( "close" );
@@ -25,7 +24,6 @@ function callbackTimer()
             }
           }
           });
-    
     if(timer != false) clearTimeout(timer);
     }
   else
@@ -36,10 +34,24 @@ function callbackTimer()
       $('#progressDownload').html(statsArray[1]);
       $('#progressBar').attr('value', parseInt(statsArray[0]));
       }
-
     timer = setTimeout("callbackTimer()",500);
     }
+}
+
+function callbackTimer(){
+  /* Following will be true when WebEngine is present for Qt5.x  */
+  if(typeof qt!='undefined')
+  {
+    window.DataStoreGUI.getStreamStat(function(stats) {
+      updateStreamStats(stats);
+    });
   }
+  else
+  {
+    var stats = window.DataStoreGUI.getStreamStat();
+    updateStreamStats(stats);
+  }
+}
 
 $(document).ready(function(){
   // Edit existing revision
